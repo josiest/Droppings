@@ -25,10 +25,18 @@ using UnityEngine;
  */
 public class GameController : MonoBehaviour
 {
-    Vector2 bounds;
     Snake snake;
-    GameObject food;
-    List<GameObject> droppings;
+
+    public Vector2 bounds;
+    public GameObject food;
+    public List<GameObject> droppings;
+
+    /** void Start()
+     * Initialize the Game controller
+     */
+    void Start() {
+        // TODO: Implement
+    }
 
     /** void GenerateFood()
      * Generate food in a random position on the board.
@@ -37,7 +45,7 @@ public class GameController : MonoBehaviour
      *  Food will not be superimposed with any part of the snake or any
      *  droppings, Food will be within the bounds of the board.
      */
-    void GenerateFood() {
+    public void GenerateFood() {
         // TODO: Implement
     }
 
@@ -47,9 +55,9 @@ public class GameController : MonoBehaviour
      * Parameters
      *  pos - position to compare
      */
-    bool InBounds(Vector3 pos) {
-        // TODO: Implement
-        return false;
+    public bool InBounds(Vector3 pos) {
+        return pos.x >= 0 && pos.x < bounds.x &&
+            pos.y >= 0 && pos.y < bounds.y;
     }
 
     /** bool InPoop(Vector3 pos)
@@ -61,7 +69,7 @@ public class GameController : MonoBehaviour
      * Postconditions
      *  InPoop compares pos with every dropping on the game board.
      */
-    bool InPoop(Vector3 pos) {
+    public bool InPoop(Vector3 pos) {
         // TODO: Implement
         return false;
     }
