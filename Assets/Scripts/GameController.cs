@@ -19,9 +19,6 @@ using UnityEngine;
  *
  *  bool InBounds(Vector3 pos)
  *      Determine if the given position is in the bounds of the game board.
- *
- *  bool InPoop(Vector3 pos)
- *      Determine if the given position is the location of a dropping.
  */
 public class GameController : MonoBehaviour
 {
@@ -58,19 +55,5 @@ public class GameController : MonoBehaviour
     public bool InBounds(Vector3 pos) {
         return pos.x >= 0 && pos.x < bounds.x &&
             pos.y >= 0 && pos.y < bounds.y;
-    }
-
-    /** bool InPoop(Vector3 pos)
-     * Determine if the given position is the location of a dropping.
-     *
-     * Parameters
-     *  pos - position to compare
-     *
-     * Postconditions
-     *  InPoop compares pos with every dropping on the game board.
-     */
-    public bool InPoop(Vector3 pos) {
-        // TODO: Implement
-        return false;
     }
 }
