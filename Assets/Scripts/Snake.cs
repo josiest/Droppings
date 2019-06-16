@@ -88,7 +88,7 @@ public class Snake
      * Postconditions
      *  If a bowel timer is already ticking, Digest() doesn't overwrite that
      *  timer but instead adds another one. The timer should count for as many
-     *  frames as the snake is long.
+     *  frames as the snake is long minus one.
      */
     public void Digest() {
         // TODO: Implement

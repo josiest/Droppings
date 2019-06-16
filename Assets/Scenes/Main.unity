@@ -232,9 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db5030ac06a37daa91e35a2640fddb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds: {x: 10, y: 10}
-  food: {fileID: 0}
-  droppings: []
+  Bounds: {x: 0, y: 0}
 --- !u!4 &1138357941
 Transform:
   m_ObjectHideFlags: 0
@@ -325,6 +323,11 @@ PrefabInstance:
     - target: {fileID: 8078562029325607003, guid: c563746b6c2d06846a605b61d5543e01,
         type: 3}
       propertyPath: gc
+      value: 
+      objectReference: {fileID: 1138357940}
+    - target: {fileID: 8078562029325607003, guid: c563746b6c2d06846a605b61d5543e01,
+        type: 3}
+      propertyPath: gameController
       value: 
       objectReference: {fileID: 1138357940}
     m_RemovedComponents: []
