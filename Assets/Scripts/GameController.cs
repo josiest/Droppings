@@ -7,10 +7,13 @@ using UnityEngine;
  *
  * Field Summary
  *
- *  Vector2 bounds              - x and y boundaries of the game board
+ * Public Fields
+ *  Vector2 Bounds       - x and y boundaries of the game board
+ *
+ * Private Fields
  *  Snake snake                 - player
  *  GameObject food             - food game object
- *  List<GameObject> droppings  - snake droppings
+ *  DroppingManager droppings   - manage the droppings in the game
  *
  * Method Summary
  *
@@ -23,10 +26,10 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     Snake snake;
+    GameObject food;
+    DroppingManager droppings;
 
-    public Vector2 bounds;
-    public GameObject food;
-    public List<GameObject> droppings;
+    public Vector2 Bounds;
 
     /** void Start()
      * Initialize the Game controller
@@ -53,8 +56,8 @@ public class GameController : MonoBehaviour
      *  pos - position to compare
      */
     public bool InBounds(Vector3 pos) {
-        return pos.x >= 0 && pos.x < bounds.x &&
-            pos.y >= 0 && pos.y < bounds.y;
+        return pos.x >= 0 && pos.x < Bounds.x &&
+            pos.y >= 0 && pos.y < Bounds.y;
     }
 
     /** public int TilesLeft()
