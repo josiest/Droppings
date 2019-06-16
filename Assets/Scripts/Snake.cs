@@ -19,6 +19,12 @@ using UnityEngine;
  *      
  *  public bool Contains(Vector3 pos)
  *      Determine if the snake's body contains the given position.
+ *
+ *  public void Digest()
+ *      Set a bowel timer for the snake to be able to poop.
+ *
+ *  public bool Poops()
+ *      Determine if the snake needs to poop.
  */
 public class Snake
 {
@@ -76,15 +82,15 @@ public class Snake
         return false;
     }
 
-    /** public void Eat()
+    /** public void Digest()
      * Set a bowel timer for the snake to be able to poop.
      *
      * Postconditions
-     *  If a bowel timer is already ticking, Eat() doesn't overwrite that timer
-     *  but instead adds another one. The timer should count for as many frames
-     *  as the snake is long.
+     *  If a bowel timer is already ticking, Digest() doesn't overwrite that
+     *  timer but instead adds another one. The timer should count for as many
+     *  frames as the snake is long.
      */
-    public void Eat() {
+    public void Digest() {
         // TODO: Implement
     }
 
