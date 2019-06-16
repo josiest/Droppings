@@ -81,7 +81,8 @@ public class Snake
      *
      * Postconditions
      *  If a bowel timer is already ticking, Eat() doesn't overwrite that timer
-     *  but instead adds another one.
+     *  but instead adds another one. The timer should count for as many frames
+     *  as the snake is long.
      */
     public void Eat() {
         // TODO: Implement

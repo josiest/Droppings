@@ -26,6 +26,7 @@ public class DroppingManager {
     List<GameObject> droppings;
     
     public Sprite droppingSprite;
+    public int Count { get => droppings.Count; }
 
     /** public DroppingManager()
      * Create a new DroppingManager with no Droppings.
