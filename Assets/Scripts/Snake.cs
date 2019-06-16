@@ -75,4 +75,27 @@ public class Snake
         // TODO: Implement
         return false;
     }
+
+    /** public void Eat()
+     * Set a bowel timer for the snake to be able to poop.
+     *
+     * Postconditions
+     *  If a bowel timer is already ticking, Eat() doesn't overwrite that timer
+     *  but instead adds another one.
+     */
+    public void Eat() {
+        // TODO: Implement
+    }
+
+    /** public bool Poops()
+     * Determine if the snake needs to poop.
+     *
+     * Postconditions
+     *  A snake will poop if a bowel timer has reached 0. This method will
+     *  also move bowel timers forward one tick.
+     */
+    public bool Poops() {
+        // TODO: Implement
+        return false;
+    }
 }
