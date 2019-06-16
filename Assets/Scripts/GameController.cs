@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
         // TODO: Implement
     }
 
-    /** bool InBounds(Vector3 pos)
+    /** public bool InBounds(Vector3 pos)
      * Determine if the given position is in the bounds of the game board.
      *
      * Parameters
@@ -55,5 +55,13 @@ public class GameController : MonoBehaviour
     public bool InBounds(Vector3 pos) {
         return pos.x >= 0 && pos.x < bounds.x &&
             pos.y >= 0 && pos.y < bounds.y;
+    }
+
+    /** public int TilesLeft()
+     * Return the amount of empty tiles left on the board.
+     */
+    public int TilesLeft() {
+        // TODO: Implement
+        return 0;
     }
 }
