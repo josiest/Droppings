@@ -11,6 +11,9 @@ using UnityEngine;
  *
  * Method Summary
  *
+ *  public void AddBody(Vector3 pos)
+ *      Create a snake body GameObject and add it to the snake.
+ *
  *  public void Move(Vector3 dir)
  *      Move the snake one unit in the direction of dir.
  *
@@ -34,6 +37,21 @@ public class Snake
      * New snakes have bodies 4 units long.
      */
     public Snake() {
+        // TODO: Implement
+    }
+
+    /** public void AddBody(Vector3 pos)
+     * Create a snake body GameObject and add it to the snake.
+     *
+     * Parameters
+     *  pos - position of the body part.
+     *
+     * Preconditions
+     *  pos doesn't overlap any other body parts, and continues from the tail
+     *  of the snake.
+     */
+    public void AddBody(Vector3 pos) {
+        // TODO: Implement
     }
 
     /** public void Move(Vector3 dir)
