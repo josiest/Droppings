@@ -49,6 +49,11 @@ public class Snake
      * Preconditions
      *  pos doesn't overlap any other body parts, and continues from the tail
      *  of the snake.
+     *
+     * Postconditions
+     *  A new GameObject with a SpriteRenderer component has been added to the
+     *  snake. The SpriteRenderer's sprite attribute should hold the appropriate
+     *  sprite.
      */
     public void AddBody(Vector3 pos) {
         // TODO: Implement
