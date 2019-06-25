@@ -93,7 +93,7 @@ public class Snake
     /** public bool Contains(Vector3 pos)
      * Determine if the snake's body contains the given position.
      *
-     * Parametrs:
+     * Parameters:
      *  pos - position to compare.
      *
      * Postconditions:
