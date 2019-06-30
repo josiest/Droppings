@@ -9,7 +9,7 @@ Provide information and control about the snake's movement
 ### Method Summary
 | Method Signature | Description |
 | --- | --- |
-| [`public void AddBody(Vector3 pos)`](#addbody) | Create a snake body GameObject and add it to the snake. |
+| [`public static GameObject CreateBody(Vector3 pos)`](#createbody) | Create a snake body GameObject. |
 | [`public void Move(Vector3 dir)`](#move) | Move the snake one unit in the direction of dir. |
 | [`public bool Eats(Vector3 pos)`](#eats) | Determine if the snake has eaten the object at the given position. |
 | [`public bool Contains(Vector3 pos)`](#contains) | Determine if the snake's body contains the given position. |
@@ -36,11 +36,11 @@ New snakes have bodies 4 units long.
 ----------
 
 
-### AddBody
+### CreateBody
 ```csharp
-public void AddBody(Vector3 pos)
+public static GameObject CreateBody(Vector3 pos)
 ```
-Create a snake body GameObject and add it to the snake.
+Create a snake body GameObject.
 
 > **Parameters**  
 
@@ -55,9 +55,8 @@ Create a snake body GameObject and add it to the snake.
 
 > **Postconditions**  
 
- A new GameObject with a SpriteRenderer component has been added to the
- snake. The SpriteRenderer's sprite attribute should hold the appropriate
- sprite.
+ The returned GameObject has a SpriteRenderer component, and its sprite
+ attribute should hold the appropriate sprite.
 
 [Top](#snake)
 

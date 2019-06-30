@@ -11,8 +11,8 @@ using UnityEngine;
  *
  * Method Summary
  *
- *  public void AddBody(Vector3 pos)
- *      Create a snake body GameObject and add it to the snake.
+ *  public static GameObject CreateBody(Vector3 pos)
+ *      Create a snake body GameObject.
  *
  *  public void Move(Vector3 dir)
  *      Move the snake one unit in the direction of dir.
@@ -40,8 +40,8 @@ public class Snake
         // TODO: Implement
     }
 
-    /** public void AddBody(Vector3 pos)
-     * Create a snake body GameObject and add it to the snake.
+    /** public void CreateBody(Vector3 pos)
+     * Create a snake body GameObject.
      *
      * Parameters
      *  pos - position of the body part.
@@ -51,12 +51,12 @@ public class Snake
      *  of the snake.
      *
      * Postconditions
-     *  A new GameObject with a SpriteRenderer component has been added to the
-     *  snake. The SpriteRenderer's sprite attribute should hold the appropriate
-     *  sprite.
+     *  The returned GameObject has a SpriteRenderer component, and its sprite
+     *  attribute should hold the appropriate sprite.
      */
-    public void AddBody(Vector3 pos) {
+    public static GameObject CreateBody(Vector3 pos) {
         // TODO: Implement
+        return null;
     }
 
     /** public void Move(Vector3 dir)
