@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a7d65dd1aac0469abded2e6bd85bd46, type: 3}
-  m_Name: GameSettings
+  m_Script: {fileID: 11500000, guid: f9f431480a4474229804fc8e4b107a35, type: 3}
+  m_Name: StandardSnakeWorld
   m_EditorClassIdentifier: 
-  defaultDifficulty: {fileID: 11400000, guid: 2b8fde0f7e8ca473a9d08677852ea939, type: 2}
-  snakeWorldSettings: {fileID: 11400000, guid: 1753120025d43428fb575224ff47a067, type: 2}
+  unitSize: 1

@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     /** The settings for the game. */
-    public GameSettings gameSettings;
+    [SerializeField] public GameSettings gameSettings;
+    
+    /** The scene to load once the core scene is ready */
+    [SerializeField] public SceneField sceneToLoad;
 
     private void Start()
     {
@@ -13,6 +17,11 @@ public class GameManager : MonoBehaviour
                              "Using default settings instead.");
             gameSettings = GameSettings.CreateDefault();
         }
+        else
+        {
+            GameSettings.SetInstance(gameSettings);
+        }
         Application.targetFrameRate = gameSettings.defaultDifficulty.gameSpeed;
+        SceneManager.LoadScene(sceneToLoad.sceneAsset.name, LoadSceneMode.Additive);
     }
 }

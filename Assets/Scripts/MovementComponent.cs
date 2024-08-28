@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementComponent : MonoBehaviour
@@ -10,66 +8,52 @@ public class MovementComponent : MonoBehaviour
 
     /** The current direction this movement component is facing.
      * Defaults to East */
-    private CardinalDirection currentDirection;
+    private CardinalDirection _currentDirection;
 
     /** The transform of the game object this component is attached to. */
-    private Transform objectTransform;
+    private Transform _objectTransform;
 
     /** The scale of the object to move by */
-    private float scale = 1.0f;
+    private float _unitSize = 1.0f;
 
-    void Start()
+    private void Start()
     {
-        currentDirection = startingDirection;
-        objectTransform = GetComponent<Transform>();
+        _currentDirection = startingDirection;
+        _objectTransform = GetComponent<Transform>();
+        _unitSize = GameSettings.GetInstance().snakeWorldSettings.unitSize;
+        Debug.Log($"Using unit size {_unitSize}");
     }
 
     void Update()
     {
-        Vector3 dirVec = Vector3.zero;
-        switch (currentDirection)
+        var dirVec = _currentDirection switch
         {
-            case CardinalDirection.East: {
-                dirVec = Vector3.right;
-                break;
-            }
-            case CardinalDirection.West: {
-                dirVec = Vector3.left;
-                break;
-            }
-            case CardinalDirection.North: {
-                dirVec = Vector3.up;
-                break;
-            }
-            case CardinalDirection.South: {
-                dirVec = Vector3.down;
-                break;
-            }
-            default: {
-                dirVec = Vector3.right;
-                break;
-            }
-        }
-        objectTransform.position += dirVec * scale;
+            CardinalDirection.East => Vector3.right,
+            CardinalDirection.West => Vector3.left,
+            CardinalDirection.North => Vector3.up,
+            CardinalDirection.South => Vector3.down,
+            _ => Vector3.right
+        };
+        _objectTransform.position += dirVec * _unitSize;
     }
 
     void OnHorizontalInput(float inValue)
     {
         if (inValue < 0.0f) {
-            currentDirection = CardinalDirection.West;
+            _currentDirection = CardinalDirection.West;
         }
         else if (inValue > 0.0f) {
-            currentDirection = CardinalDirection.East;
+            _currentDirection = CardinalDirection.East;
         }
     }
 
     void OnVerticalInput(float inValue)
     {
         if (inValue < 0.0f) {
-            currentDirection = CardinalDirection.North;
+            _currentDirection = CardinalDirection.North;
         }
         else if (inValue > 0.0f) {
-            currentDirection = CardinalDirection.South;
+            _currentDirection = CardinalDirection.South;
         }
     }
 }
