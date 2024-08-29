@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7dc0c43e1074652bafc6ac121637ea, type: 3}
   m_Name: StandardDifficulty
   m_EditorClassIdentifier: 
-  gameSpeed: 2
+  gameSpeed: 3

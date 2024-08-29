@@ -22,6 +22,6 @@ public class GameManager : MonoBehaviour
             GameSettings.SetInstance(gameSettings);
         }
         Application.targetFrameRate = gameSettings.defaultDifficulty.gameSpeed;
-        SceneManager.LoadScene(sceneToLoad.sceneAsset.name, LoadSceneMode.Additive);
+        SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
     }
 }

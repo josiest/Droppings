@@ -4,5 +4,5 @@ using UnityEngine;
 public class SnakeWorldSettings : ScriptableObject
 {
     /** The unit size of the snake world (in world units) */
-    public float unitSize = 10f;
+    public float unitSize = 1f;
 }

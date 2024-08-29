@@ -1,10 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MovementComponent : MonoBehaviour
 {
     /** The direction this movement component starts in.
      * Defaults to East. */
-    public CardinalDirection startingDirection = CardinalDirection.East;
+    [SerializeField] public CardinalDirection startingDirection = CardinalDirection.East;
+
+    /** A reference to the action mappings where movement is defined */
+    private ActionDefinition _actionMappings;
 
     /** The current direction this movement component is facing.
      * Defaults to East */
@@ -16,15 +20,30 @@ public class MovementComponent : MonoBehaviour
     /** The scale of the object to move by */
     private float _unitSize = 1.0f;
 
+    private void Awake()
+    {
+        _actionMappings = new ActionDefinition();
+    }
+
     private void Start()
     {
         _currentDirection = startingDirection;
         _objectTransform = GetComponent<Transform>();
         _unitSize = GameSettings.GetInstance().snakeWorldSettings.unitSize;
-        Debug.Log($"Using unit size {_unitSize}");
+        if (_actionMappings is not null)
+        {
+            _actionMappings.playerMovement.up.performed +=
+                ctx => OnDirectionChanged(ctx, CardinalDirection.North);
+            _actionMappings.playerMovement.down.performed +=
+                ctx => OnDirectionChanged(ctx, CardinalDirection.South);
+            _actionMappings.playerMovement.left.performed +=
+                ctx => OnDirectionChanged(ctx, CardinalDirection.West);
+            _actionMappings.playerMovement.right.performed +=
+                ctx => OnDirectionChanged(ctx, CardinalDirection.East);
+        }
     }
 
-    void Update()
+    private void Update()
     {
         var dirVec = _currentDirection switch
         {
@@ -37,23 +56,17 @@ public class MovementComponent : MonoBehaviour
         _objectTransform.position += dirVec * _unitSize;
     }
 
-    void OnHorizontalInput(float inValue)
+    private void OnDirectionChanged(InputAction.CallbackContext context, CardinalDirection direction)
     {
-        if (inValue < 0.0f) {
-            _currentDirection = CardinalDirection.West;
-        }
-        else if (inValue > 0.0f) {
-            _currentDirection = CardinalDirection.East;
-        }
+        if (context.ReadValue<float>() > 0f) { _currentDirection = direction; }
     }
 
-    void OnVerticalInput(float inValue)
+    private void OnEnable()
     {
-        if (inValue < 0.0f) {
-            _currentDirection = CardinalDirection.North;
-        }
-        else if (inValue > 0.0f) {
-            _currentDirection = CardinalDirection.South;
-        }
+        _actionMappings.playerMovement.Enable();
+    }
+    private void OnDisable()
+    {
+        _actionMappings.playerMovement.Disable();
     }
 }

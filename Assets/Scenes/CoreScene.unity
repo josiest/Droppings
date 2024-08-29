@@ -245,7 +245,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSettings: {fileID: 11400000, guid: a4429fde01b5b43cdaf3f238222a9f27, type: 2}
   sceneToLoad:
-    m_Handle: 0
+    sceneAsset: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
+    sceneName: BasicLevel
 --- !u!4 &2029307857
 Transform:
   m_ObjectHideFlags: 0
