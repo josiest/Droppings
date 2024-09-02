@@ -1,30 +1,37 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+namespace Game
 {
-    /** The settings for the game. */
-    [SerializeField] public GameSettings gameSettings;
-    
-    /** The scene to load once the core scene is ready */
-    [SerializeField] public SceneField sceneToLoad;
-
-    private void Start()
+    public class GameManager : MonoBehaviour
     {
-        if (gameSettings is null)
+        /** The settings for the game. */
+        [SerializeField] public GameSettings gameSettings;
+    
+        /** The scene to load once the core scene is ready */
+        [SerializeField] public SceneField sceneToLoad;
+
+        public static GameManager GetInstance() { return _instance; }
+        private static GameManager _instance;
+
+        private void Start()
         {
-            Debug.LogWarning("Game settings hasn't been set, please set it in the inspector. " +
-                             "Using default settings instead.");
-            gameSettings = GameSettings.CreateDefault();
-        }
-        else
-        {
-            GameSettings.SetInstance(gameSettings);
-        }
-        Application.targetFrameRate = gameSettings.defaultDifficulty.gameSpeed;
-        if (sceneToLoad is not null)
-        {
-            SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
+            _instance = this;
+            if (gameSettings is null)
+            {
+                Debug.LogWarning("Game settings hasn't been set, please set it in the inspector. " +
+                                 "Using default settings instead.");
+                gameSettings = GameSettings.CreateDefault();
+            }
+            else
+            {
+                GameSettings.SetInstance(gameSettings);
+            }
+            Application.targetFrameRate = gameSettings.difficultySetting.gameSpeed;
+            if (sceneToLoad is not null)
+            {
+                SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
+            }
         }
     }
 }

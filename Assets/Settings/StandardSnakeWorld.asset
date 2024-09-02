@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: StandardSnakeWorld
   m_EditorClassIdentifier: 
   unitSize: 1
+  defaultSnakeSegmentPrefab: {fileID: 1961867929153009535, guid: 0b3d0726d0b704069b62152e94de1bf0, type: 3}

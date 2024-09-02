@@ -1,37 +1,37 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MovementComponent : MonoBehaviour
+namespace Snake
 {
-    /** The direction this movement component starts in.
-     * Defaults to East. */
-    [SerializeField] public CardinalDirection startingDirection = CardinalDirection.East;
-
-    /** A reference to the action mappings where movement is defined */
-    private ActionDefinition _actionMappings;
-
-    /** The current direction this movement component is facing.
-     * Defaults to East */
-    private CardinalDirection _currentDirection;
-
-    /** The transform of the game object this component is attached to. */
-    private Transform _objectTransform;
-
-    /** The scale of the object to move by */
-    private float _unitSize = 1.0f;
-
-    private void Awake()
+    public class MovementComponent : MonoBehaviour
     {
-        _actionMappings = new ActionDefinition();
-    }
+        /** The direction this movement component starts in.
+         * Defaults to East. */
+        [SerializeField] public CardinalDirection startingDirection = CardinalDirection.East;
 
-    private void Start()
-    {
-        _currentDirection = startingDirection;
-        _objectTransform = GetComponent<Transform>();
-        _unitSize = GameSettings.GetInstance().snakeWorldSettings.unitSize;
-        if (_actionMappings is not null)
+        /** A reference to the action mappings where movement is defined */
+        private ActionDefinition _actionMappings;
+
+        /** The current direction this movement component is facing.
+         * Defaults to East */
+        private CardinalDirection _currentDirection;
+
+        /** A reference to the snake body */
+        private SnakeBodyComponent _snakeBody;
+
+        private void Awake()
         {
+            _actionMappings = new ActionDefinition();
+            _currentDirection = startingDirection;
+            _snakeBody = GetComponent<SnakeBodyComponent>();
+        }
+
+        private void Start()
+        {
+            //int numSegments = gameManager.gameSettings.difficultySetting.numSnakeBodySegments;
+            _snakeBody.PopulateInDirection(Directions.Opposite(startingDirection));
+
+            if (_actionMappings is null) { return; }
             _actionMappings.playerMovement.up.performed +=
                 ctx => OnDirectionChanged(ctx, CardinalDirection.North);
             _actionMappings.playerMovement.down.performed +=
@@ -41,32 +41,24 @@ public class MovementComponent : MonoBehaviour
             _actionMappings.playerMovement.right.performed +=
                 ctx => OnDirectionChanged(ctx, CardinalDirection.East);
         }
-    }
 
-    private void Update()
-    {
-        var dirVec = _currentDirection switch
+        private void Update()
         {
-            CardinalDirection.East => Vector3.right,
-            CardinalDirection.West => Vector3.left,
-            CardinalDirection.North => Vector3.up,
-            CardinalDirection.South => Vector3.down,
-            _ => Vector3.right
-        };
-        _objectTransform.position += dirVec * _unitSize;
-    }
+            _snakeBody.MoveInDirection(_currentDirection);
+        }
 
-    private void OnDirectionChanged(InputAction.CallbackContext context, CardinalDirection direction)
-    {
-        if (context.ReadValue<float>() > 0f) { _currentDirection = direction; }
-    }
+        private void OnDirectionChanged(InputAction.CallbackContext context, CardinalDirection direction)
+        {
+            if (context.ReadValue<float>() > 0f) { _currentDirection = direction; }
+        }
 
-    private void OnEnable()
-    {
-        _actionMappings.playerMovement.Enable();
-    }
-    private void OnDisable()
-    {
-        _actionMappings.playerMovement.Disable();
+        private void OnEnable()
+        {
+            _actionMappings.playerMovement.Enable();
+        }
+        private void OnDisable()
+        {
+            _actionMappings.playerMovement.Disable();
+        }
     }
 }
