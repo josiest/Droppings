@@ -33,13 +33,13 @@ namespace Snake
 
             if (_actionMappings is null) { return; }
             _actionMappings.playerMovement.up.performed +=
-                ctx => OnDirectionChanged(ctx, CardinalDirection.North);
+                Ctx => OnDirectionChanged(Ctx, CardinalDirection.North);
             _actionMappings.playerMovement.down.performed +=
-                ctx => OnDirectionChanged(ctx, CardinalDirection.South);
+                Ctx => OnDirectionChanged(Ctx, CardinalDirection.South);
             _actionMappings.playerMovement.left.performed +=
-                ctx => OnDirectionChanged(ctx, CardinalDirection.West);
+                Ctx => OnDirectionChanged(Ctx, CardinalDirection.West);
             _actionMappings.playerMovement.right.performed +=
-                ctx => OnDirectionChanged(ctx, CardinalDirection.East);
+                Ctx => OnDirectionChanged(Ctx, CardinalDirection.East);
         }
 
         private void Update()
@@ -47,9 +47,9 @@ namespace Snake
             _snakeBody.MoveInDirection(_currentDirection);
         }
 
-        private void OnDirectionChanged(InputAction.CallbackContext context, CardinalDirection direction)
+        private void OnDirectionChanged(InputAction.CallbackContext Context, CardinalDirection Direction)
         {
-            if (context.ReadValue<float>() > 0f) { _currentDirection = direction; }
+            if (Context.ReadValue<float>() > 0f) { _currentDirection = Direction; }
         }
 
         private void OnEnable()

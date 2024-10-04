@@ -19,7 +19,7 @@ namespace Game
             _instance.snakeWorldSettings = CreateInstance<SnakeWorldSettings>();
             return _instance;
         }
-        public static void SetInstance(GameSettings instance) { _instance = instance; }
+        public static void SetInstance(GameSettings Instance) { _instance = Instance; }
     
         private static GameSettings _instance;
 

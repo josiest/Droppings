@@ -18,61 +18,62 @@ namespace Scene
         private void LoadDependencies()
         {
             // first copy the tree's edges as children and parent edge maps
-            var children = new Dictionary<string, List<string>>();
-            var parents = new Dictionary<string, List<string>>();
+            var Children = new Dictionary<string, List<string>>();
+            var Parents = new Dictionary<string, List<string>>();
 
-            var queue = new List<string>(scenesToLoad.Select(scene => scene.ToString()));
-            var visited = new HashSet<string>();
-            var independentNodes = new List<string>();
+            var Queue = new List<string>(scenesToLoad.Select(Scene => Scene.ToString()));
+            var Visited = new HashSet<string>();
+            var IndependentNodes = new List<string>();
 
-            while (queue.Count > 0)
+            while (Queue.Count > 0)
             {
-                var scene = queue[0];
-                queue.RemoveAt(0);
-                visited.Add(scene);
+                var Scene = Queue[0];
+                Queue.RemoveAt(0);
+                Visited.Add(Scene);
 
-                if (!sceneDependencies.HasDependencies(scene)) { independentNodes.Add(scene); }
-                parents.Add(scene, sceneDependencies.DependenciesOf(scene));
+                if (!sceneDependencies.HasDependencies(Scene)) { IndependentNodes.Add(Scene); }
+                Parents.Add(Scene, sceneDependencies.DependenciesOf(Scene));
 
-                foreach (var dep in sceneDependencies.DependenciesOf(scene))
+                foreach (var Dep in sceneDependencies.DependenciesOf(Scene))
                 {
-                    var edges = children.GetValueOrDefault(dep, new List<string>());
-                    edges.Add(scene);
-                    children.TryAdd(dep, edges);
-                    if (!visited.Contains(dep)) { queue.Add(dep); }
+                    var Edges = Children.GetValueOrDefault(Dep, new List<string>());
+                    Edges.Add(Scene);
+                    Children.TryAdd(Dep, Edges);
+                    if (!Visited.Contains(Dep)) { Queue.Add(Dep); }
                 }
             }
 
             // now perform topological sort while loading scenes
-            var loadOrder = new List<string>();
-            while (independentNodes.Count > 0)
+            var LoadOrder = new List<string>();
+            while (IndependentNodes.Count > 0)
             {
-                var scene = independentNodes[0];
-                independentNodes.RemoveAt(0);
-                loadOrder.Add(scene);
+                var Scene = IndependentNodes[0];
+                IndependentNodes.RemoveAt(0);
+                LoadOrder.Add(Scene);
 
-                foreach (var child in children[scene])
+                foreach (var Child in Children[Scene])
                 {
-                    parents[child].Remove(scene);
-                    if (parents[child].Count > 0)
+                    Parents[Child].Remove(Scene);
+                    if (Parents[Child].Count > 0)
                     {
                         continue;
                     }
 
-                    independentNodes.Add(child);
-                    parents.Remove(child);
+                    IndependentNodes.Add(Child);
+                    Parents.Remove(Child);
                 }
             }
 
-            if (parents.Count > 0)
+            if (Parents.Count > 0)
             {
-                Debug.LogError("Some scenes have circular dependencies. Please fix this in order to load scenes.");
+                Debug.LogError("Some scenes have circular dependencies. " +
+                               "Please fix this in order to load scenes.");
                 return;
             }
 
-            foreach (var scene in loadOrder)
+            foreach (var Scene in LoadOrder)
             {
-                SceneManager.LoadScene(scene, LoadSceneMode.Additive);
+                SceneManager.LoadScene(Scene, LoadSceneMode.Additive);
             }
         }
     }

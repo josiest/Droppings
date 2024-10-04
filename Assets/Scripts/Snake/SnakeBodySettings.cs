@@ -18,9 +18,11 @@ namespace Snake
 
          public static SnakeBodySettings CreateDefault()
          {
-             var settings = CreateInstance<SnakeBodySettings>();
-             settings.segmentPrefab = GameSettings.GetInstance().snakeWorldSettings.defaultSnakeSegmentPrefab;
-             return settings;
+             var Settings = CreateInstance<SnakeBodySettings>();
+             Settings.segmentPrefab = GameSettings.GetInstance()
+                                                  .snakeWorldSettings
+                                                  .defaultSnakeSegmentPrefab;
+             return Settings;
          }
     }
 }

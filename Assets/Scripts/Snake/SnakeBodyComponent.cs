@@ -11,8 +11,8 @@ namespace Snake
         public GameObject bodySegmentPrefab;
 
         /** The amount of body segments the snake has */
-        private int numSegments = 4;
-        
+        private const int NumSegments = 4;
+
         /** Keeps track of each of the body segments */
         private readonly LinkedList<GameObject> _segments = new();
 
@@ -27,30 +27,30 @@ namespace Snake
             Debug.LogWarning("Snake Body Segment hasn't been set, using default instead.\n" +
                              "You can change this in the snake body component settings");
 
-            var settings = GameSettings.GetInstance();
-            bodySegmentPrefab = settings.snakeWorldSettings.defaultSnakeSegmentPrefab;
+            var Settings = GameSettings.GetInstance();
+            bodySegmentPrefab = Settings.snakeWorldSettings.defaultSnakeSegmentPrefab;
         }
 
-        public void PopulateInDirection(CardinalDirection direction)
+        public void PopulateInDirection(CardinalDirection Direction)
         {
             _headTransform = GetComponent<Transform>();
-            var bodyPosition = _headTransform.position;
-            var delta = Directions.AsVector(direction);
+            var BodyPosition = _headTransform.position;
+            var Delta = Directions.AsVector(Direction);
             _segments.Clear();
-            for (int i = 0; i < numSegments; i++)
+            for (int I = 0; I < NumSegments; I++)
             {
-                _segments.AddLast(Instantiate(bodySegmentPrefab, bodyPosition, Quaternion.identity));
-                bodyPosition += delta;
+                _segments.AddLast(Instantiate(bodySegmentPrefab, BodyPosition, Quaternion.identity));
+                BodyPosition += Delta;
             }
         }
-        public void MoveInDirection(CardinalDirection direction)
+        public void MoveInDirection(CardinalDirection Direction)
         {
             if (_segments.Count == 0) { return; }
-            var tail = _segments.Last.Value;
+            var Tail = _segments.Last.Value;
             _segments.RemoveLast();
-            var head = _segments.First.Value;
-            tail.transform.position = head.transform.position + Directions.AsVector(direction);
-            _segments.AddFirst(tail);
+            var Head = _segments.First.Value;
+            Tail.transform.position = Head.transform.position + Directions.AsVector(Direction);
+            _segments.AddFirst(Tail);
         }
     }
 }
