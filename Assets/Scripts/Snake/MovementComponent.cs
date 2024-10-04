@@ -47,9 +47,14 @@ namespace Snake
             _snakeBody.MoveInDirection(_currentDirection);
         }
 
-        private void OnDirectionChanged(InputAction.CallbackContext Context, CardinalDirection Direction)
+        private void OnDirectionChanged(InputAction.CallbackContext Context,
+                                        CardinalDirection Direction)
         {
-            if (Context.ReadValue<float>() > 0f) { _currentDirection = Direction; }
+            if (Context.ReadValue<float>() > 0f &&
+                Direction != Directions.Opposite(_currentDirection))
+            {
+                _currentDirection = Direction;
+            }
         }
 
         private void OnEnable()
