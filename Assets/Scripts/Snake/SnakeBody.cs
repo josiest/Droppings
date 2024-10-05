@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game;
@@ -21,12 +20,12 @@ namespace Snake
         /** Keeps track of the position of the head */
         private Transform _headTransform;
 
-        public bool CollidesWith(Vector3 Pos)
+        public bool CollidesWith(Vector3 pos)
         {
-            return _segments.Any(Segment =>
+            return _segments.Any(segment =>
             {
-                var Diff = Segment.transform.position - Pos;
-                return Diff.sqrMagnitude < 0.01f;
+                var diff = segment.transform.position - pos;
+                return diff.sqrMagnitude < 0.01f;
             });
         }
 
@@ -41,45 +40,45 @@ namespace Snake
             Debug.LogWarning("Snake Body Segment hasn't been set, using default instead.\n" +
                              "You can change this in the snake body component settings");
 
-            var Settings = GameSettings.GetInstance();
-            bodySegmentPrefab = Settings.snakeWorldSettings.defaultSnakeSegmentPrefab;
+            var settings = GameSettings.GetInstance();
+            bodySegmentPrefab = settings.snakeWorldSettings.defaultSnakeSegmentPrefab;
         }
 
-        public void PopulateInDirection(CardinalDirection Direction)
+        public void PopulateInDirection(CardinalDirection direction)
         {
             _headTransform = GetComponent<Transform>();
-            var BodyPosition = _headTransform.position;
-            var Delta = Directions.AsVector(Direction);
+            var bodyPosition = _headTransform.position;
+            var delta = Directions.AsVector(direction);
             _segments.Clear();
             for (int i = 0; i < NumSegments; i++)
             {
                 _segments.AddLast(Instantiate(bodySegmentPrefab,
-                                              BodyPosition,
+                                              bodyPosition,
                                               Quaternion.identity,
                                               _headTransform));
-                BodyPosition += Delta;
+                bodyPosition += delta;
             }
         }
 
-        public void ResetTo(Vector3 Position, CardinalDirection Direction)
+        public void ResetTo(Vector3 position, CardinalDirection direction)
         {
-            var Delta = Directions.AsVector(Direction);
-            var BodyPosition = Position;
-            foreach (var Segment in _segments)
+            var delta = Directions.AsVector(direction);
+            var bodyPosition = position;
+            foreach (var segment in _segments)
             {
-                Segment.transform.position = BodyPosition;
-                BodyPosition += Delta;
+                segment.transform.position = bodyPosition;
+                bodyPosition += delta;
             }
         }
 
-        public void MoveInDirection(CardinalDirection Direction)
+        public void MoveInDirection(CardinalDirection direction)
         {
             if (_segments.Count == 0) { return; }
-            var Tail = _segments.Last.Value;
+            var tail = _segments.Last.Value;
             _segments.RemoveLast();
-            var Head = _segments.First.Value;
-            Tail.transform.position = Head.transform.position + Directions.AsVector(Direction);
-            _segments.AddFirst(Tail);
+            var head = _segments.First.Value;
+            tail.transform.position = head.transform.position + Directions.AsVector(direction);
+            _segments.AddFirst(tail);
         }
     }
 }

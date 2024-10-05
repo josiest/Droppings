@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Food;
+using UnityEngine;
 
 namespace Snake
 {
@@ -36,6 +37,14 @@ namespace Snake
                 _snakeBody = _snake.AddComponent<SnakeBody>();
             }
             _food = Instantiate(foodPrefab, RandomOpenSpace(), Quaternion.identity);
+            var pickup = _food.GetComponent<Pickup>();
+            if (!pickup)
+            {
+                Debug.LogWarning("Food Prefab doesn't have a Pickup component. " +
+                                 "Adding one now");
+                pickup = _food.AddComponent<Pickup>();
+            }
+            pickup.Consume = OnConsumeFood;
         }
 
         private Vector3 RandomOpenSpace()
@@ -56,6 +65,11 @@ namespace Snake
             var y = Random.Range(_boardDimensions.y,
                                  _boardDimensions.y + _boardDimensions.height);
             return new Vector3(x, y, 0f);
+        }
+
+        private void OnConsumeFood(GameObject item)
+        {
+            item.transform.position = RandomOpenSpace();
         }
     }
 }
