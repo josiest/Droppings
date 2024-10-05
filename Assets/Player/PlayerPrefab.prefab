@@ -58,4 +58,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5d204083fb04ce0981f45b2fbc4c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snakeBodySettings: {fileID: 11400000, guid: 94f714a11cb644485945206fe91a5c88, type: 2}
+  bodySegmentPrefab: {fileID: 1961867929153009535, guid: 0b3d0726d0b704069b62152e94de1bf0, type: 3}
