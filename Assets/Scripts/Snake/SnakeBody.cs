@@ -19,6 +19,9 @@ namespace Snake
 
         /** Keeps track of the position of the head */
         private Transform _headTransform;
+        
+        public GameObject Head => _segments.First.Value;
+        public GameObject Tail => _segments.Last.Value;
 
         public bool CollidesWith(Vector3 pos)
         {

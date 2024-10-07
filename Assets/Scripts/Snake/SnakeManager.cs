@@ -1,4 +1,5 @@
-﻿using Food;
+﻿using System.Collections.Generic;
+using Food;
 using UnityEngine;
 
 namespace Snake
@@ -10,6 +11,9 @@ namespace Snake
 
         /** The food object prefab that the player should consume */
         [SerializeField] public GameObject foodPrefab;
+        
+        /** The dropping object prefab the player will create after consuming food */
+        [SerializeField] public GameObject droppingPrefab;
 
         /** The position to spawn the snake. TODO: use some sort of game object in-level */
         private readonly Vector3 _startPosition = Vector3.zero;
@@ -23,8 +27,14 @@ namespace Snake
         /** A reference to the snake's body component */
         private SnakeBody _snakeBody;
 
+        /** A reference to the snake's digestion system */
+        private SnakeDigestion _snakeDigestion;
+
         /** A reference to the food object on the board */
         private GameObject _food;
+
+        /** A list of references to all droppings on the board */
+        private readonly List<GameObject> _droppings = new();
 
         public void Awake()
         {
@@ -36,6 +46,16 @@ namespace Snake
                                  "Adding default component now");
                 _snakeBody = _snake.AddComponent<SnakeBody>();
             }
+
+            _snakeDigestion = _snake.GetComponent<SnakeDigestion>();
+            if (!_snakeDigestion)
+            {
+                Debug.LogWarning("Snake Prefab doesn't have Snake Digestion component. " +
+                                 "Adding default now.");
+                _snakeDigestion = _snake.AddComponent<SnakeDigestion>();
+            }
+            _snakeDigestion.LayDropping = LayDropping;
+
             _food = Instantiate(foodPrefab, RandomOpenSpace(), Quaternion.identity);
             var pickup = _food.GetComponent<Pickup>();
             if (!pickup)
@@ -45,6 +65,20 @@ namespace Snake
                 pickup = _food.AddComponent<Pickup>();
             }
             pickup.Consume = OnConsumeFood;
+        }
+
+        public void LayDropping(Vector3 pos)
+        {
+            var dropping = Instantiate(droppingPrefab, pos, Quaternion.identity, transform);
+            _droppings.Add(dropping);
+            var pickup = dropping.GetComponent<Pickup>();
+            if (!pickup)
+            {
+                Debug.LogWarning("Dropping Prefab doesn't have a Pickup component. " +
+                                 "Adding one now");
+                pickup = dropping.AddComponent<Pickup>();
+            }
+            pickup.Consume = OnConsumeDropping;
         }
 
         private Vector3 RandomOpenSpace()
@@ -70,6 +104,15 @@ namespace Snake
         private void OnConsumeFood(GameObject item)
         {
             item.transform.position = RandomOpenSpace();
+            _snakeDigestion.Digest();
+        }
+
+        private void OnConsumeDropping(GameObject item)
+        {
+            _droppings.ForEach(Destroy);
+            _droppings.Clear();
+            _snakeBody.ResetTo(_startPosition, CardinalDirection.East);
+            _food.transform.position = RandomOpenSpace();
         }
     }
 }
