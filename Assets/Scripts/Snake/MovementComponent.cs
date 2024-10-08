@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Snake
 {
+    [RequireComponent(typeof(SnakeBody))]
     public class MovementComponent : MonoBehaviour
     {
         /** The direction this movement component starts in.
@@ -10,7 +11,7 @@ namespace Snake
         [SerializeField] public CardinalDirection startingDirection = CardinalDirection.East;
 
         /** The starting position */
-        private Vector3 _startingPosition;
+        private Vector2Int _startingPosition;
 
         /** A reference to the action mappings where movement is defined */
         private ActionDefinition _actionMappings;
@@ -27,22 +28,21 @@ namespace Snake
             _actionMappings = new ActionDefinition();
             _currentDirection = startingDirection;
             _snakeBody = GetComponent<SnakeBody>();
-            _startingPosition = _snakeBody.transform.position;
+            _startingPosition = new Vector2Int(Mathf.FloorToInt(transform.position.x),
+                                               Mathf.FloorToInt(transform.position.y));
         }
 
         private void Start()
         {
-            _snakeBody.PopulateInDirection(Directions.Opposite(startingDirection));
-
             if (_actionMappings is null) { return; }
             _actionMappings.playerMovement.up.performed +=
-                Ctx => OnDirectionChanged(Ctx, CardinalDirection.North);
+                ctx => OnDirectionChanged(ctx, CardinalDirection.North);
             _actionMappings.playerMovement.down.performed +=
-                Ctx => OnDirectionChanged(Ctx, CardinalDirection.South);
+                ctx => OnDirectionChanged(ctx, CardinalDirection.South);
             _actionMappings.playerMovement.left.performed +=
-                Ctx => OnDirectionChanged(Ctx, CardinalDirection.West);
+                ctx => OnDirectionChanged(ctx, CardinalDirection.West);
             _actionMappings.playerMovement.right.performed +=
-                Ctx => OnDirectionChanged(Ctx, CardinalDirection.East);
+                ctx => OnDirectionChanged(ctx, CardinalDirection.East);
         }
 
         private void Update()
@@ -55,13 +55,13 @@ namespace Snake
             _snakeBody.ResetTo(_startingPosition, Directions.Opposite(startingDirection));
         }
 
-        private void OnDirectionChanged(InputAction.CallbackContext Context,
-                                        CardinalDirection Direction)
+        private void OnDirectionChanged(InputAction.CallbackContext context,
+                                        CardinalDirection direction)
         {
-            if (Context.ReadValue<float>() > 0f &&
-                Direction != Directions.Opposite(_currentDirection))
+            if (context.ReadValue<float>() > 0f &&
+                direction != Directions.Opposite(_currentDirection))
             {
-                _currentDirection = Direction;
+                _currentDirection = direction;
             }
         }
 

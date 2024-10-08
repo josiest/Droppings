@@ -10,9 +10,9 @@ namespace Snake
 
     public static class Directions
     {
-        public static Vector3 AsVector(CardinalDirection Direction)
+        public static Vector3 AsVector3(CardinalDirection direction)
         {
-            return Direction switch
+            return direction switch
             {
                 CardinalDirection.East => Vector3.right,
                 CardinalDirection.West => Vector3.left,
@@ -22,9 +22,21 @@ namespace Snake
             };
         }
 
-        public static CardinalDirection Opposite(CardinalDirection Direction)
+        public static Vector2Int AsVector2Int(CardinalDirection direction)
         {
-            return Direction switch
+            return direction switch
+            {
+                CardinalDirection.East => Vector2Int.right,
+                CardinalDirection.West => Vector2Int.left,
+                CardinalDirection.North => Vector2Int.up,
+                CardinalDirection.South => Vector2Int.down,
+                _ => Vector2Int.right
+            };
+        }
+
+        public static CardinalDirection Opposite(CardinalDirection direction)
+        {
+            return direction switch
             {
                 CardinalDirection.East => CardinalDirection.West,
                 CardinalDirection.West => CardinalDirection.East,

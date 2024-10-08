@@ -1,16 +1,17 @@
-﻿using Snake;
+﻿using Board;
+using Snake;
 using UnityEngine;
 
 namespace Food
 {
-    public class Pickup : MonoBehaviour
+    public class Pickup : BoardPiece
     {
         public delegate void OnConsume(GameObject item);
         public OnConsume Consume;
 
-        public void OnCollisionEnter2D(Collision2D other)
+        public override void CollideWith(GameObject other)
         {
-            if (other.gameObject.GetComponentInParent<SnakeBody>())
+            if (other.GetComponentInParent<SnakeBody>())
             {
                 Consume(gameObject);
             }

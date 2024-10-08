@@ -4,14 +4,11 @@ using UnityEngine;
 
 namespace Food
 {
+    [RequireComponent(typeof(SnakeBody))]
     public class SnakeDigestion : MonoBehaviour
     {
         /** The max number of frames before a snake lays a dropping after consuming food */
         [SerializeField] public int numDigestionFrames = 3;
-
-        /** Delegate called when a dropping should be layed */
-        public delegate void OnLayDropping(Vector3 pos);
-        public OnLayDropping LayDropping;
 
         /** The current number of frames until a dropping is layed */
         private int _droppingTimer = -1;
@@ -37,7 +34,7 @@ namespace Food
             }
             if (_droppingTimer == 0)
             {
-                LayDropping(_snakeBody.Tail.transform.position);
+                _snakeBody.ShouldLayDropping = true;
             }
         }
     }

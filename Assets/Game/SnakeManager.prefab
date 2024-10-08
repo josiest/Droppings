@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5512265557955392066}
   - component: {fileID: 7289551308534703447}
+  - component: {fileID: -6281225218477631439}
   m_Layer: 0
   m_Name: SnakeManager
   m_TagString: Untagged
@@ -47,3 +48,20 @@ MonoBehaviour:
   snakePrefab: {fileID: 3260957587943132577, guid: c351fd31e96e749cabc683ae3fe12bd2, type: 3}
   foodPrefab: {fileID: 501864309173797182, guid: d7037d71feace4943ac5a78e3c1f5fa8, type: 3}
   droppingPrefab: {fileID: 1203217900376738519, guid: 3c2742960a8d27e44b354aec57b534c1, type: 3}
+--- !u!114 &-6281225218477631439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2458867998014872116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151fed18c6bf468ab75ee60cf0a29004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dimensions:
+    x: -5
+    y: -5
+    width: 10
+    height: 10
