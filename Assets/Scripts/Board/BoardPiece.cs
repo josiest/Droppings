@@ -18,5 +18,9 @@ namespace Board
         public virtual void CollideWith(GameObject other)
         {
         }
+        
+        public virtual void Tick()
+        {
+        }
     }
 }

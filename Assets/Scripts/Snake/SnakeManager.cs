@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Snake
 {
-    [RequireComponent(typeof(GameBoard))]
+    [RequireComponent(typeof(GameBoard), typeof(TickManager))]
     public class SnakeManager : MonoBehaviour
     {
         /** The snake player object that will be spawned at the start of the game */
@@ -20,7 +20,10 @@ namespace Snake
         /** The position to spawn the snake. TODO: use some sort of game object in-level */
         private readonly Vector2Int _startPosition = Vector2Int.zero;
 
-        /** The dimensions of the game board. TODO: read from level settings */
+        /** Manage frame-rate-limited objects */
+        private TickManager _tickManager;
+        
+        /** The board which keeps track of object position and collisions */
         private GameBoard _board;
 
         /** A reference to the spawned snake */
@@ -37,6 +40,14 @@ namespace Snake
 
         public void Awake()
         {
+            _tickManager = GetComponent<TickManager>();
+            if (!_tickManager)
+            {
+                Debug.LogWarning("Snake Manager has no Tick Manager component. " +
+                                 "Adding one now");
+                _tickManager = gameObject.AddComponent<TickManager>();
+            }
+
             _board = GetComponent<GameBoard>();
             if (!_board)
             {
@@ -44,6 +55,7 @@ namespace Snake
                                  "Adding one now");
                 _board = gameObject.AddComponent<GameBoard>();
             }
+            _tickManager.AddTickable(_board);
 
             _snake = Instantiate(snakePrefab);
             _snakeBody = _snake.GetComponent<SnakeBody>();
@@ -57,6 +69,7 @@ namespace Snake
             _snakeBody.PopulateInDirection(Directions.Opposite(snakeMovement.startingDirection));
             _snakeBody.AddToBoard(_board);
             _snakeBody.LayDropping = LayDropping;
+            _tickManager.AddTickable(snakeMovement);
 
             _snakeDigestion = _snake.GetComponent<SnakeDigestion>();
             if (!_snakeDigestion)

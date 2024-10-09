@@ -1,20 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Board
 {
-    public class GameBoard : MonoBehaviour
+    public class GameBoard : Tickable
     {
+        /** The dimensions of the board */
         [SerializeField] private RectInt dimensions = new(-5, -5, 10, 10);
         public RectInt Dimensions => dimensions;
 
         private readonly List<BoardPiece> _pieces = new();
         private readonly HashSet<BoardPiece> _dirty = new();
 
-        public void Update()
+        public override void Tick()
         {
+            _pieces.ForEach(piece => piece.Tick());
             foreach (var piece in _pieces.Where(piece => !piece.CompareTag("Player")))
             {
                 foreach (var other in _pieces.Where(other => other.CompareTag("Player"))

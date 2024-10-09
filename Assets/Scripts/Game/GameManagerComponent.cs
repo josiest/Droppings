@@ -26,7 +26,6 @@ namespace Game
             {
                 GameSettings.SetInstance(gameSettings);
             }
-            Application.targetFrameRate = gameSettings.difficultySetting.gameSpeed;
             if (sceneToLoad is not null)
             {
                 SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);

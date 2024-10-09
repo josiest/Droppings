@@ -6,7 +6,7 @@ namespace Game
     public class DifficultySettings : ScriptableObject
     {
         /** The speed of the game (in frames per second) */
-        [Range(1, 100)] public int gameSpeed = 10;
+        [Range(1, 100)] public int gameSpeed = 1;
 
         /** The number of body segments the snake has */
         [Range(1, 100)] public int numSnakeBodySegments = 4;
