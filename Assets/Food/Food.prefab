@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1228691458486312734}
   - component: {fileID: -1151947406358921735}
-  - component: {fileID: 3891857027378418774}
-  - component: {fileID: -1730775239496893963}
+  - component: {fileID: 6003278750688329062}
   m_Layer: 0
   m_Name: Food
   m_TagString: Food
@@ -72,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1663072761
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 82eb4e28ff59743959bc72a624430646, type: 3}
   m_Color: {r: 0.23661795, g: 0.7509433, b: 0.38591942, a: 1}
@@ -86,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3891857027378418774
+--- !u!114 &6003278750688329062
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,19 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 501864309173797182}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f9021b2de974f909ad3010a54d2093b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-1730775239496893963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 501864309173797182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 834e9bdf5bea4f9487b0eaef48416a6e, type: 3}
+  m_Script: {fileID: 11500000, guid: edc4218c96d6480d9982997754aacbbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}

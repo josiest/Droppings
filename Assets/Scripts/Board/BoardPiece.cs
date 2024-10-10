@@ -15,11 +15,13 @@ namespace Board
             }
         }
 
-        public virtual void CollideWith(GameObject other)
+        public void Awake()
         {
+            var board = GameBoard.Instance;
+            if (board) { board.AddPiece(this); }
         }
-        
-        public virtual void Tick()
+
+        public virtual void CollideWith(BoardPiece other)
         {
         }
     }

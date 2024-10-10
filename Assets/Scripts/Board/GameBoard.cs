@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,22 +12,34 @@ namespace Board
         public RectInt Dimensions => dimensions;
 
         private readonly List<BoardPiece> _pieces = new();
-        private readonly HashSet<BoardPiece> _dirty = new();
+        private readonly HashSet<BoardPiece> _dirtyCache = new();
+
+        public static GameBoard Instance { get; private set; }
+        public void Awake()
+        {
+            Instance = this;
+            _pieces.AddRange(FindObjectsOfType<GameObject>(gameObject)
+                                .Select(obj => obj.GetComponent<BoardPiece>())
+                                .Where(obj => obj != null));
+        }
+        public void OnDestroy()
+        {
+            Instance = null;
+        }
 
         public override void Tick()
         {
-            _pieces.ForEach(piece => piece.Tick());
-            foreach (var piece in _pieces.Where(piece => !piece.CompareTag("Player")))
+            foreach (var playerPiece in _pieces.Where(piece => piece.CompareTag("Player")))
             {
-                foreach (var other in _pieces.Where(other => other.CompareTag("Player"))
-                                             .Where(other => piece.Position == other.Position))
+                foreach (var other in _pieces.Where(other => !other.CompareTag("Player"))
+                                             .Where(other => playerPiece.Position == other.Position))
                 {
-                    piece.CollideWith(other.gameObject);
+                    other.CollideWith(playerPiece);
                 }
             }
-            _pieces.RemoveAll(piece => _dirty.Contains(piece));
-            foreach (var piece in _dirty) { Destroy(piece.gameObject); }
-            _dirty.Clear();
+            _pieces.RemoveAll(piece => _dirtyCache.Contains(piece));
+            foreach (var piece in _dirtyCache) { Destroy(piece.gameObject); }
+            _dirtyCache.Clear();
         }
         
         public GameObject CreatePiece(GameObject prefab, Vector2Int pos)
@@ -54,6 +65,16 @@ namespace Board
             _pieces.Add(piece);
         }
 
+        public BoardPiece FindPieceByTag(string searchTag)
+        {
+            return _pieces.First(piece => piece.CompareTag(searchTag));
+        }
+
+        public void RemovePiece(BoardPiece piece)
+        {
+            _pieces.Remove(piece);
+            Destroy(piece.gameObject);
+        }
         public bool HasCollision(Vector2Int pos)
         {
             return _pieces.Any(piece => piece.Position == pos);
@@ -78,7 +99,7 @@ namespace Board
 
         public void ClearByTag(string clearTag)
         {
-            _dirty.UnionWith(_pieces.Where(piece => piece.CompareTag(clearTag)));
+            _dirtyCache.UnionWith(_pieces.Where(piece => piece.CompareTag(clearTag)));
         }
     }
 }

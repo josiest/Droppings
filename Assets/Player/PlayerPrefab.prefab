@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodySegmentPrefab: {fileID: 1961867929153009535, guid: 0b3d0726d0b704069b62152e94de1bf0, type: 3}
+  droppingPrefab: {fileID: 1203217900376738519, guid: 3c2742960a8d27e44b354aec57b534c1, type: 3}
 --- !u!114 &-5100723053322394898
 MonoBehaviour:
   m_ObjectHideFlags: 0

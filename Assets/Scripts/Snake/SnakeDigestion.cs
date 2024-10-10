@@ -1,11 +1,10 @@
-﻿using System;
-using Snake;
+﻿using Board;
 using UnityEngine;
 
-namespace Food
+namespace Snake
 {
     [RequireComponent(typeof(SnakeBody))]
-    public class SnakeDigestion : MonoBehaviour
+    public class SnakeDigestion : Tickable
     {
         /** The max number of frames before a snake lays a dropping after consuming food */
         [SerializeField] public int numDigestionFrames = 3;
@@ -16,17 +15,12 @@ namespace Food
         /** A reference to the snake body */
         private SnakeBody _snakeBody;
 
-        public void Digest()
-        {
-            _droppingTimer = numDigestionFrames;
-        }
-        
         public void Awake()
         {
             _snakeBody = GetComponent<SnakeBody>();
         }
 
-        public void Update()
+        public override void Tick()
         {
             if (_droppingTimer >= 0)
             {
@@ -36,6 +30,11 @@ namespace Food
             {
                 _snakeBody.ShouldLayDropping = true;
             }
+        }
+
+        public void Digest()
+        {
+            _droppingTimer = numDigestionFrames;
         }
     }
 }

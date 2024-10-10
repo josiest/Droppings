@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Board;
+using Food;
 using Game;
 using UnityEngine;
 
@@ -9,13 +10,13 @@ namespace Snake
     /** Represents each of the segments of a snake and handles segment movement */
     public class SnakeBody : MonoBehaviour
     {
-        /** The settings used to define this snake */
+        /** The object used for each snake body segment */
         [SerializeField] public GameObject bodySegmentPrefab;
 
-        public bool ShouldLayDropping { get; set;  }
+        /** The object used for each dropping */
+        [SerializeField] public GameObject droppingPrefab;
 
-        public delegate void OnLayDropping(Vector2Int pos);
-        public OnLayDropping LayDropping;
+        public bool ShouldLayDropping { get; set;  }
 
         /** The amount of body segments the snake has */
         private const int NumSegments = 4;
@@ -41,11 +42,11 @@ namespace Snake
                 Debug.LogWarning("Snake Body Segment has no board piece component. Adding one now.");
                 bodySegmentPrefab.AddComponent<BoardPiece>();
             }
-        }
-
-        public bool CollidesWith(Vector2Int pos)
-        {
-            return _segments.Any(segment => segment.GetComponent<BoardPiece>().Position == pos);
+            if (!droppingPrefab.GetComponent<Dropping>())
+            {
+                Debug.LogWarning("Snake Body Dropping has no Dropping component. Adding one now.");
+                droppingPrefab.AddComponent<Dropping>();
+            }
         }
 
         public void AddToBoard(GameBoard board)
@@ -58,13 +59,14 @@ namespace Snake
 
         public void PopulateInDirection(CardinalDirection direction)
         {
+            var board = GameBoard.Instance;
+            if (!board) { return; }
+
             var bodyPosition = Vector2Int.zero;
             var delta = Directions.AsVector2Int(direction);
-            _segments.Clear();
             for (int i = 0; i < NumSegments; i++)
             {
-                var segment = Instantiate(bodySegmentPrefab, transform);
-                segment.GetComponent<BoardPiece>().Position = bodyPosition;
+                var segment = board.CreatePiece(bodySegmentPrefab, bodyPosition, transform);
                 _segments.AddLast(segment);
                 bodyPosition += delta;
             }
@@ -103,6 +105,12 @@ namespace Snake
                 LayDropping(tailPosition);
                 ShouldLayDropping = false;
             }
+        }
+
+        private void LayDropping(Vector2Int position)
+        {
+            var board = GameBoard.Instance;
+            if (board) { board.CreatePiece(droppingPrefab, position); }
         }
     }
 }
