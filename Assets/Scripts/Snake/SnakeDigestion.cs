@@ -1,4 +1,5 @@
-﻿using Board;
+﻿using System;
+using Board;
 using Scene;
 using UnityEngine;
 
@@ -20,6 +21,11 @@ namespace Snake
         {
             _snakeBody = GetComponent<SnakeBody>();
             SceneSubsystems.Find<TickSystem>()?.AddTickable(this);
+        }
+
+        public void Reset()
+        {
+            _droppingTimer = -1;
         }
 
         public void Tick()

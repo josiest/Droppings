@@ -15,22 +15,29 @@ namespace Snake
 
         /** The object used for each dropping */
         [SerializeField] public GameObject droppingPrefab;
+        
+        public SnakeDigestion Digestion { get; private set; }
+        public MovementComponent Movement { get; private set; }
 
         public bool ShouldLayDropping { get; set;  }
 
         /** The amount of body segments the snake has */
         private const int NumSegments = 4;
-
-        /** Keeps track of each of the body segments */
-        private readonly LinkedList<BoardPiece> _segments = new();
         
         public BoardPiece Head => _segments.First.Value;
         public BoardPiece Tail => _segments.Last.Value;
 
+
+        /** Keeps track of each of the body segments */
+        private readonly LinkedList<BoardPiece> _segments = new();
+
+        private GameBoard _board;
+        
         public static SnakeBody SpawnAt(GameObject snakePrefab, GameBoard board,
                                         Vector2Int headPosition, CardinalDirection facingDirection)
         {
             var snake = Instantiate(snakePrefab).GetComponent<SnakeBody>();
+            snake._board = board;
             snake.PopulateBody(board);
             snake.ResetTo(headPosition, facingDirection);
             snake.GetComponent<MovementComponent>().Direction = facingDirection;
@@ -57,6 +64,9 @@ namespace Snake
                 Debug.LogWarning("Snake Body Dropping has no Dropping component. Adding one now.");
                 droppingPrefab.AddComponent<Dropping>();
             }
+
+            Digestion = GetComponent<SnakeDigestion>();
+            Movement = GetComponent<MovementComponent>();
         }
 
         public void PopulateBody(GameBoard board)
@@ -104,8 +114,7 @@ namespace Snake
 
         private void LayDropping(Vector2Int position)
         {
-            var board = GameBoard.Instance;
-            if (board) { board.CreatePiece<Dropping>(droppingPrefab, position); }
+            _board?.CreatePiece<Dropping>(droppingPrefab, position);
         }
     }
 }

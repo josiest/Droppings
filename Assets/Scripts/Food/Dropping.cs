@@ -32,6 +32,7 @@ namespace Food
         }
         protected override void ConsumeBy(SnakeBody snake)
         {
+            snake.Digestion.Reset();
             _board?.ClearByTag(DroppingTag);
             _snakeNest?.RespawnSnake();
             _fruitTree?.DropFruit(_board? _board.RandomOpenSpace() : Vector2Int.zero);

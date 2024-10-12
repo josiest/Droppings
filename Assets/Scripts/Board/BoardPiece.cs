@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Scene;
+using UnityEngine;
 
 namespace Board
 {
@@ -14,13 +15,10 @@ namespace Board
                 transform.position = new Vector3(value.x, value.y, 0f);
             }
         }
-
         public virtual void Awake()
         {
-            var board = GameBoard.Instance;
-            if (board) { board.AddPiece(this); }
+            SceneSubsystems.Find<GameBoard>()?.AddPiece(this);
         }
-
         public virtual void CollideWith(BoardPiece other)
         {
         }

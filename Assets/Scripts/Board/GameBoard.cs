@@ -15,17 +15,10 @@ namespace Board
 
         private readonly List<BoardPiece> _pieces = new();
         private readonly HashSet<BoardPiece> _dirtyCache = new();
-
-        public static GameBoard Instance { get; private set; }
         public void Awake()
         {
-            Instance = this;
             _pieces.AddRange(FindObjectsOfType<BoardPiece>());
             GetComponent<TickSystem>().AddTickable(this);
-        }
-        public void OnDestroy()
-        {
-            Instance = null;
         }
 
         public void Tick()
