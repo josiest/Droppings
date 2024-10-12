@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 namespace Snake
 {
     [RequireComponent(typeof(SnakeBody))]
-    public class MovementComponent : Tickable
+    public class MovementComponent : MonoBehaviour, ITickable
     {
         /** The direction this movement component starts in.
          * Defaults to East. */
@@ -46,7 +46,7 @@ namespace Snake
                 ctx => OnDirectionChanged(ctx, CardinalDirection.East);
         }
 
-        public override void Tick()
+        public void Tick()
         {
             _snakeBody.MoveInDirection(_currentDirection);
         }

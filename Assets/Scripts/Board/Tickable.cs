@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-
-namespace Board
+﻿namespace Board
 {
-    public class Tickable : MonoBehaviour
+    public interface ITickable
     {
-        public virtual void Tick()
+        public void Tick()
         {
         }
     }

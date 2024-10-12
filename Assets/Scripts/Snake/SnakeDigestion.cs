@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Snake
 {
     [RequireComponent(typeof(SnakeBody))]
-    public class SnakeDigestion : Tickable
+    public class SnakeDigestion : MonoBehaviour, ITickable
     {
         /** The max number of frames before a snake lays a dropping after consuming food */
         [SerializeField] public int numDigestionFrames = 3;
@@ -20,7 +20,7 @@ namespace Snake
             _snakeBody = GetComponent<SnakeBody>();
         }
 
-        public override void Tick()
+        public void Tick()
         {
             if (_droppingTimer >= 0)
             {

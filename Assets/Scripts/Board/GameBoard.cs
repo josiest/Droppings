@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace Board
 {
-    public class GameBoard : Tickable
+    public class GameBoard : MonoBehaviour, ITickable
     {
         /** The dimensions of the board */
         [SerializeField] private RectInt dimensions = new(-5, -5, 10, 10);
@@ -27,7 +27,7 @@ namespace Board
             Instance = null;
         }
 
-        public override void Tick()
+        public void Tick()
         {
             foreach (var playerPiece in _pieces.Where(piece => piece.CompareTag("Player")))
             {

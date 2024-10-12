@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Board
 {
-    public class TickManager : MonoBehaviour
+    public class TickSystem : MonoBehaviour
     {
         /** How many frames per second to tick with */
         [SerializeField] private float ticksPerSecond = 4f;
@@ -11,7 +11,7 @@ namespace Board
         private float _currentTickTimer;
         private const float MinTickFrequency = 0.0001f;
 
-        private readonly List<Tickable> _tickables = new();
+        private readonly List<ITickable> _tickables = new();
         
         public void Start()
         {
@@ -29,7 +29,7 @@ namespace Board
             }
         }
 
-        public void AddTickable(Tickable tickable)
+        public void AddTickable(ITickable tickable)
         {
             _tickables.Add(tickable);
         }

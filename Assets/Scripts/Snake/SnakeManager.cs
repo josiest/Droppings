@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Snake
 {
-    [RequireComponent(typeof(GameBoard), typeof(TickManager))]
+    [RequireComponent(typeof(GameBoard), typeof(TickSystem))]
     public class SnakeManager : MonoBehaviour
     {
         /** The snake player object that will be spawned at the start of the game */
@@ -14,7 +14,7 @@ namespace Snake
         [SerializeField] public GameObject foodPrefab;
 
         /** Manage frame-rate-limited objects */
-        private TickManager _tickManager;
+        private TickSystem _tickSystem;
         
         /** The board which keeps track of object position and collisions */
         private GameBoard _board;
@@ -24,12 +24,12 @@ namespace Snake
 
         public void Awake()
         {
-            _tickManager = GetComponent<TickManager>();
-            if (!_tickManager)
+            _tickSystem = GetComponent<TickSystem>();
+            if (!_tickSystem)
             {
                 Debug.LogWarning("Snake Manager has no Tick Manager component. " +
                                  "Adding one now");
-                _tickManager = gameObject.AddComponent<TickManager>();
+                _tickSystem = gameObject.AddComponent<TickSystem>();
             }
 
             _board = GetComponent<GameBoard>();
@@ -39,7 +39,7 @@ namespace Snake
                                  "Adding one now");
                 _board = gameObject.AddComponent<GameBoard>();
             }
-            _tickManager.AddTickable(_board);
+            _tickSystem.AddTickable(_board);
 
             _snake = Instantiate(snakePrefab);
             var snakeBody = _snake.GetComponent<SnakeBody>();
@@ -50,7 +50,7 @@ namespace Snake
                 snakeBody = _snake.AddComponent<SnakeBody>();
             }
             var snakeMovement = _snake.GetComponent<MovementComponent>();
-            _tickManager.AddTickable(snakeMovement);
+            _tickSystem.AddTickable(snakeMovement);
 
             snakeBody.PopulateInDirection(Directions.Opposite(snakeMovement.startingDirection));
             snakeBody.AddToBoard(_board);
@@ -62,7 +62,7 @@ namespace Snake
                                  "Adding default now.");
                 snakeDigestion = _snake.AddComponent<SnakeDigestion>();
             }
-            _tickManager.AddTickable(snakeDigestion);
+            _tickSystem.AddTickable(snakeDigestion);
 
             if (!foodPrefab.GetComponent<BoardPiece>())
             {
