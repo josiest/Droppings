@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Board;
 using Food;
 using Game;
@@ -28,7 +27,17 @@ namespace Snake
         public BoardPiece Head => _segments.First.Value;
         public BoardPiece Tail => _segments.Last.Value;
 
-        public void Start()
+        public static SnakeBody SpawnAt(GameObject snakePrefab, GameBoard board,
+                                        Vector2Int headPosition, CardinalDirection facingDirection)
+        {
+            var snake = Instantiate(snakePrefab).GetComponent<SnakeBody>();
+            snake.PopulateBody(board);
+            snake.ResetTo(headPosition, facingDirection);
+            snake.GetComponent<MovementComponent>().Direction = facingDirection;
+            return snake;
+        }
+
+        public void Awake()
         {
             if (bodySegmentPrefab is null)
             {
@@ -50,33 +59,18 @@ namespace Snake
             }
         }
 
-        public void AddToBoard(GameBoard board)
+        public void PopulateBody(GameBoard board)
         {
-            foreach (var piece in _segments.Select(segment => segment.GetComponent<BoardPiece>()))
-            {
-                board.AddPiece(piece);
-            }
-        }
-
-        public void PopulateInDirection(CardinalDirection direction)
-        {
-            var board = GameBoard.Instance;
-            if (!board) { return; }
-
-            var bodyPosition = Vector2Int.zero;
-            var delta = Directions.AsVector2Int(direction);
             for (int i = 0; i < NumSegments; i++)
             {
-                var segment = board.CreatePiece<BoardPiece>(bodySegmentPrefab, bodyPosition, transform);
-                _segments.AddLast(segment);
-                bodyPosition += delta;
+                _segments.AddLast(board.CreatePiece<BoardPiece>(bodySegmentPrefab, transform));
             }
         }
 
-        public void ResetTo(Vector2Int position, CardinalDirection direction)
+        public void ResetTo(Vector2Int headPosition, CardinalDirection facingDirection)
         {
-            var delta = Directions.AsVector2Int(direction);
-            var bodyPosition = position;
+            var delta = Directions.AsVector2Int(Directions.Opposite(facingDirection));
+            var bodyPosition = headPosition;
             foreach (var segment in _segments)
             {
                 segment.Position = bodyPosition;

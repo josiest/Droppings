@@ -8,19 +8,12 @@ namespace Snake
     [RequireComponent(typeof(SnakeBody))]
     public class MovementComponent : MonoBehaviour, ITickable
     {
-        /** The direction this movement component starts in.
-         * Defaults to East. */
-        [SerializeField] public CardinalDirection startingDirection = CardinalDirection.East;
-
-        /** The starting position */
-        private Vector2Int _startingPosition;
-
         /** A reference to the action mappings where movement is defined */
         private ActionDefinition _actionMappings;
 
         /** The current direction this movement component is facing.
          * Defaults to East */
-        private CardinalDirection _currentDirection;
+        public CardinalDirection Direction { get; set; }
 
         /** A reference to the snake body */
         private SnakeBody _snakeBody;
@@ -28,11 +21,7 @@ namespace Snake
         private void Awake()
         {
             _actionMappings = new ActionDefinition();
-            _currentDirection = startingDirection;
             _snakeBody = GetComponent<SnakeBody>();
-            _startingPosition = new Vector2Int(Mathf.FloorToInt(transform.position.x),
-                                               Mathf.FloorToInt(transform.position.y));
-
             SceneSubsystems.Find<TickSystem>()?.AddTickable(this);
         }
 
@@ -51,21 +40,16 @@ namespace Snake
 
         public void Tick()
         {
-            _snakeBody.MoveInDirection(_currentDirection);
-        }
-
-        public void Reset()
-        {
-            _snakeBody.ResetTo(_startingPosition, Directions.Opposite(startingDirection));
+            _snakeBody.MoveInDirection(Direction);
         }
 
         private void OnDirectionChanged(InputAction.CallbackContext context,
                                         CardinalDirection direction)
         {
             if (context.ReadValue<float>() > 0f &&
-                direction != Directions.Opposite(_currentDirection))
+                direction != Directions.Opposite(Direction))
             {
-                _currentDirection = direction;
+                Direction = direction;
             }
         }
 

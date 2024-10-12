@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 namespace Board
 {
     [RequireComponent(typeof(TickSystem))]
-    public class GameBoard : MonoBehaviour, ITickable
+    public class GameBoard : SceneSubsystem, ITickable
     {
         /** The dimensions of the board */
         [SerializeField] private RectInt dimensions = new(-5, -5, 10, 10);
@@ -49,20 +49,25 @@ namespace Board
             _pieces.Add(piece);
             return piece;
         }
-        
+
+        public T CreatePiece<T>(GameObject prefab, Transform parent) where T : BoardPiece
+        {
+            var piece = Instantiate(prefab, parent).GetComponent<T>();
+            _pieces.Add(piece);
+            return piece;
+        }
+
         public T CreatePiece<T>(GameObject prefab, Vector2Int pos) where T: BoardPiece
         {
-            var piece = Instantiate(prefab, transform).GetComponent<T>();
+            var piece = CreatePiece<T>(prefab);
             piece.Position = pos;
-            _pieces.Add(piece);
             return piece;
         }
 
         public T CreatePiece<T>(GameObject prefab, Vector2Int pos, Transform parent) where T: BoardPiece
         {
-            var piece = Instantiate(prefab, parent).GetComponent<T>();
+            var piece = CreatePiece<T>(prefab, parent);
             piece.Position = pos;
-            _pieces.Add(piece);
             return piece;
         }
 
