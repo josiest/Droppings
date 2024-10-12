@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Board
 {
+    [RequireComponent(typeof(TickSystem))]
     public class GameBoard : MonoBehaviour, ITickable
     {
         /** The dimensions of the board */
@@ -19,12 +20,8 @@ namespace Board
         public void Awake()
         {
             Instance = this;
-            _pieces.AddRange(FindObjectsOfType<GameObject>(gameObject)
-                                .Select(obj => obj.GetComponent<BoardPiece>())
-                                .Where(obj => obj != null));
-
-            SceneSubsystems.Find<TickSystem>()?
-                           .AddTickable(this);
+            _pieces.AddRange(FindObjectsOfType<BoardPiece>());
+            GetComponent<TickSystem>().AddTickable(this);
         }
         public void OnDestroy()
         {

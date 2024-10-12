@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Food
 {
+    [RequireComponent(typeof(GameBoard))]
     public class DivineFruitTree : SceneSubsystem
     {
         [SerializeField] private GameObject fruitPrefab;
@@ -16,16 +17,7 @@ namespace Food
                 Debug.LogWarning("Fruit prefab has no FoodPickup component. Adding one now");
                 fruitPrefab.AddComponent<FoodPickup>();
             }
-
-            var board = GetComponent<GameBoard>();
-            if (board)
-            {
-                _fruit = board.CreatePiece<FoodPickup>(fruitPrefab);
-            }
-            else
-            {
-                Debug.LogError("Tried to spawn fruit but Game Board doesn't exist");
-            }
+            _fruit = GetComponent<GameBoard>().CreatePiece<FoodPickup>(fruitPrefab);
         }
 
         public void DropFruit(Vector2Int position)

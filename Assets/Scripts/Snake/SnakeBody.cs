@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Snake
 {
     /** Represents each of the segments of a snake and handles segment movement */
+    [RequireComponent(typeof(SnakeDigestion), typeof(MovementComponent))]
     public class SnakeBody : MonoBehaviour
     {
         /** The object used for each snake body segment */
