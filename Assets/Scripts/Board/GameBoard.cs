@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Scene;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,6 +22,9 @@ namespace Board
             _pieces.AddRange(FindObjectsOfType<GameObject>(gameObject)
                                 .Select(obj => obj.GetComponent<BoardPiece>())
                                 .Where(obj => obj != null));
+
+            SceneSubsystems.Find<TickSystem>()?
+                           .AddTickable(this);
         }
         public void OnDestroy()
         {

@@ -15,7 +15,7 @@ namespace Board
             }
         }
 
-        public void Awake()
+        public virtual void Awake()
         {
             var board = GameBoard.Instance;
             if (board) { board.AddPiece(this); }

@@ -1,4 +1,5 @@
 using Board;
+using Scene;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,6 +32,8 @@ namespace Snake
             _snakeBody = GetComponent<SnakeBody>();
             _startingPosition = new Vector2Int(Mathf.FloorToInt(transform.position.x),
                                                Mathf.FloorToInt(transform.position.y));
+
+            SceneSubsystems.Find<TickSystem>()?.AddTickable(this);
         }
 
         private void Start()

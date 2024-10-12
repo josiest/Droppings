@@ -1,4 +1,5 @@
 ﻿using Board;
+using Scene;
 using UnityEngine;
 
 namespace Snake
@@ -18,6 +19,7 @@ namespace Snake
         public void Awake()
         {
             _snakeBody = GetComponent<SnakeBody>();
+            SceneSubsystems.Find<TickSystem>()?.AddTickable(this);
         }
 
         public void Tick()

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Scene;
 using UnityEngine;
 
 namespace Board
 {
-    public class TickSystem : MonoBehaviour
+    public class TickSystem : SceneSubsystem
     {
         /** How many frames per second to tick with */
         [SerializeField] private float ticksPerSecond = 4f;
