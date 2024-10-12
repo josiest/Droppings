@@ -1,5 +1,6 @@
 ﻿using Board;
 using Food;
+using Scene;
 using UnityEngine;
 
 namespace Snake
@@ -9,9 +10,6 @@ namespace Snake
     {
         /** The snake player object that will be spawned at the start of the game */
         [SerializeField] public GameObject snakePrefab;
-
-        /** The food object prefab that the player should consume */
-        [SerializeField] public GameObject foodPrefab;
 
         /** Manage frame-rate-limited objects */
         private TickSystem _tickSystem;
@@ -64,19 +62,8 @@ namespace Snake
             }
             _tickSystem.AddTickable(snakeDigestion);
 
-            if (!foodPrefab.GetComponent<BoardPiece>())
-            {
-                Debug.LogWarning("Food Prefab doesn't have a Board Piece component. " +
-                                 "Adding one now");
-                foodPrefab.AddComponent<BoardPiece>();
-            }
-            if (!foodPrefab.GetComponent<FoodPickup>())
-            {
-                Debug.LogWarning("Food Prefab doesn't have a Food component. " +
-                                 "Adding one now");
-                foodPrefab.AddComponent<FoodPickup>();
-            }
-            _board.CreatePiece(foodPrefab, _board.RandomOpenSpace());
+            SceneSubsystems.Find<DivineFruitTree>()?
+                           .DropFruit(_board.RandomOpenSpace());
         }
     }
 }

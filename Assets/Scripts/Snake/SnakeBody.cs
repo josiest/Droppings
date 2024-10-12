@@ -22,10 +22,10 @@ namespace Snake
         private const int NumSegments = 4;
 
         /** Keeps track of each of the body segments */
-        private readonly LinkedList<GameObject> _segments = new();
+        private readonly LinkedList<BoardPiece> _segments = new();
         
-        public GameObject Head => _segments.First.Value;
-        public GameObject Tail => _segments.Last.Value;
+        public BoardPiece Head => _segments.First.Value;
+        public BoardPiece Tail => _segments.Last.Value;
 
         public void Start()
         {
@@ -66,7 +66,7 @@ namespace Snake
             var delta = Directions.AsVector2Int(direction);
             for (int i = 0; i < NumSegments; i++)
             {
-                var segment = board.CreatePiece(bodySegmentPrefab, bodyPosition, transform);
+                var segment = board.CreatePiece<BoardPiece>(bodySegmentPrefab, bodyPosition, transform);
                 _segments.AddLast(segment);
                 bodyPosition += delta;
             }
@@ -78,7 +78,7 @@ namespace Snake
             var bodyPosition = position;
             foreach (var segment in _segments)
             {
-                segment.GetComponent<BoardPiece>().Position = bodyPosition;
+                segment.Position = bodyPosition;
                 bodyPosition += delta;
             }
         }
@@ -110,7 +110,7 @@ namespace Snake
         private void LayDropping(Vector2Int position)
         {
             var board = GameBoard.Instance;
-            if (board) { board.CreatePiece(droppingPrefab, position); }
+            if (board) { board.CreatePiece<Dropping>(droppingPrefab, position); }
         }
     }
 }

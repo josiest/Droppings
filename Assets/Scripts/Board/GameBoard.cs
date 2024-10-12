@@ -41,23 +41,28 @@ namespace Board
             foreach (var piece in _dirtyCache) { Destroy(piece.gameObject); }
             _dirtyCache.Clear();
         }
-        
-        public GameObject CreatePiece(GameObject prefab, Vector2Int pos)
+
+        public T CreatePiece<T>(GameObject prefab) where T : BoardPiece
         {
-            var obj = Instantiate(prefab, transform);
-            var piece = obj.GetComponent<BoardPiece>();
+            var piece = Instantiate(prefab, transform).GetComponent<T>();
+            _pieces.Add(piece);
+            return piece;
+        }
+        
+        public T CreatePiece<T>(GameObject prefab, Vector2Int pos) where T: BoardPiece
+        {
+            var piece = Instantiate(prefab, transform).GetComponent<T>();
             piece.Position = pos;
             _pieces.Add(piece);
-            return obj;
+            return piece;
         }
 
-        public GameObject CreatePiece(GameObject prefab, Vector2Int pos, Transform parent)
+        public T CreatePiece<T>(GameObject prefab, Vector2Int pos, Transform parent) where T: BoardPiece
         {
-            var obj = Instantiate(prefab, parent);
-            var piece = obj.GetComponent<BoardPiece>();
+            var piece = Instantiate(prefab, parent).GetComponent<T>();
             piece.Position = pos;
             _pieces.Add(piece);
-            return obj;
+            return piece;
         }
 
         public void AddPiece(BoardPiece piece)

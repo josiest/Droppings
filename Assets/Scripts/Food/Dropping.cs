@@ -1,4 +1,5 @@
 using Board;
+using Scene;
 using Snake;
 
 namespace Food
@@ -14,8 +15,8 @@ namespace Food
             var snakeMovement = snake.GetComponent<MovementComponent>();
             snakeMovement.Reset();
 
-            var food = board.FindPieceByTag("Food");
-            if (food) { food.Position = board.RandomOpenSpace(); }
+            SceneSubsystems.Find<DivineFruitTree>()?
+                           .DropFruit(board.RandomOpenSpace());
         }
     }
 }
