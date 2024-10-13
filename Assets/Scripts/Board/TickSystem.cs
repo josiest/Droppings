@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Scene;
 using UnityEngine;
 
@@ -13,7 +14,12 @@ namespace Board
         private const float MinTickFrequency = 0.0001f;
 
         private readonly List<ITickable> _tickables = new();
-        
+
+        public void Awake()
+        {
+            _tickables.AddRange(FindObjectsOfType<MonoBehaviour>().OfType<ITickable>());
+        }
+
         public void Start()
         {
             ticksPerSecond = Mathf.Max(MinTickFrequency, ticksPerSecond);

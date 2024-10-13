@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Board;
 using Scene;
 using UnityEngine;
@@ -17,6 +19,9 @@ namespace Snake
 
         /** A reference to the snake body */
         private SnakeBody _snakeBody;
+
+        /** A queue of directions to change in */
+        private readonly Queue<CardinalDirection> _directionQueue = new();
 
         private void Awake()
         {
@@ -40,16 +45,22 @@ namespace Snake
 
         public void Tick()
         {
+            if (_directionQueue.Count > 0)
+            {
+                Direction = _directionQueue.Dequeue();
+            }
             _snakeBody.MoveInDirection(Direction);
         }
 
         private void OnDirectionChanged(InputAction.CallbackContext context,
-                                        CardinalDirection direction)
+                                        CardinalDirection newDirection)
         {
-            if (context.ReadValue<float>() > 0f &&
-                direction != Directions.Opposite(Direction))
+            var hasChangedDirection = context.ReadValue<float>() > 0f;
+            var lastDirection = _directionQueue.Count > 0 ? _directionQueue.Last() : Direction;
+
+            if (hasChangedDirection && newDirection != Directions.Opposite(lastDirection))
             {
-                Direction = direction;
+                _directionQueue.Enqueue(newDirection);
             }
         }
 
