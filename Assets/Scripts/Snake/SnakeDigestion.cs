@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Board;
 using Scene;
 using UnityEngine;
@@ -11,11 +12,10 @@ namespace Snake
     {
         /** The max number of frames before a snake lays a dropping after consuming food */
         [SerializeField] public int numDigestionFrames = 3;
-
         private ActionDefinition _actionMappings;
 
         /** The current number of frames until a dropping is layed */
-        private int _droppingTimer = -1;
+        private readonly List<int> _droppingTimers = new();
 
         /** A reference to the snake body */
         private SnakeBody _snakeBody;
@@ -31,25 +31,30 @@ namespace Snake
 
         public void Reset()
         {
-            _droppingTimer = -1;
+            _droppingTimers.Clear();
         }
 
         public void Tick()
         {
-            if (_droppingTimer >= 0)
+            for (int i = 0; i < _droppingTimers.Count; i++)
             {
-                _droppingTimer -= 1;
+                _droppingTimers[i] -= 1;
             }
-            if (_droppingTimer == 0)
+            if (_droppingTimers.Any(timer => timer <= 0))
             {
                 _snakeBody.ShouldLayDropping = true;
             }
+            _droppingTimers.RemoveAll(timer => timer <= 0);
         }
 
         private void OnLayDroppingPressed(InputAction.CallbackContext ctx)
         {
-            if (!ctx.ReadValueAsButton() || _droppingTimer <= 0) { return; }
-            _droppingTimer = -1;
+            if (!ctx.ReadValueAsButton() || _droppingTimers.Count == 0
+                                         || _droppingTimers[0] <= 0)
+            {
+                return;
+            }
+            _droppingTimers.RemoveAt(0);
             _snakeBody.ShouldLayDropping = true;
         }
 
@@ -63,7 +68,7 @@ namespace Snake
         }
         public void Digest()
         {
-            _droppingTimer = numDigestionFrames;
+            _droppingTimers.Add(numDigestionFrames);
         }
     }
 }
