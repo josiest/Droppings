@@ -9,6 +9,7 @@ namespace Board
     [RequireComponent(typeof(TickSystem))]
     public class GameBoard : SceneSubsystem, ITickable
     {
+        [SerializeField] private GameObject backgroundSprite;
         /** The dimensions of the board */
         [SerializeField] private RectInt dimensions = new(-5, -5, 10, 10);
         public RectInt Dimensions => dimensions;
@@ -19,6 +20,13 @@ namespace Board
         {
             _pieces.AddRange(FindObjectsOfType<BoardPiece>());
             GetComponent<TickSystem>().AddTickable(this);
+
+            if (!backgroundSprite.GetComponent<SpriteRenderer>())
+            {
+                Debug.LogWarning("Background prefab has no SpriteRenderer. Adding one now");
+                backgroundSprite.AddComponent<SpriteRenderer>();
+            }
+            backgroundSprite.transform.localScale = new Vector3(Dimensions.width, Dimensions.height, 1f);
         }
 
         public void Tick()

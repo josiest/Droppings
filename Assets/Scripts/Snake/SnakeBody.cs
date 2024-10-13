@@ -98,8 +98,28 @@ namespace Snake
             _segments.RemoveLast();
 
             // move the tail to the head + next direction
-            var headPosition = Head.GetComponent<BoardPiece>().Position;
-            tail.GetComponent<BoardPiece>().Position = headPosition + Directions.AsVector2Int(direction);
+            var nextPosition = Head.GetComponent<BoardPiece>().Position +
+                               Directions.AsVector2Int(direction);
+
+            if (nextPosition.x >= _board.Dimensions.xMax)
+            {
+                nextPosition.x -= _board.Dimensions.width;
+            }
+            else if (nextPosition.x < _board.Dimensions.xMin)
+            {
+                nextPosition.x += _board.Dimensions.width;
+            }
+
+            if (nextPosition.y >= _board.Dimensions.yMax)
+            {
+                nextPosition.y -= _board.Dimensions.height;
+            }
+            else if (nextPosition.y < _board.Dimensions.yMin)
+            {
+                nextPosition.y += _board.Dimensions.height;
+            }
+
+            tail.GetComponent<BoardPiece>().Position = nextPosition;
             
             // Add the tail back to the front of the segment list as the new head
             _segments.AddFirst(tail);

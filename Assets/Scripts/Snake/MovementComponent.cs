@@ -58,7 +58,8 @@ namespace Snake
             var hasChangedDirection = context.ReadValue<float>() > 0f;
             var lastDirection = _directionQueue.Count > 0 ? _directionQueue.Last() : Direction;
 
-            if (hasChangedDirection && newDirection != Directions.Opposite(lastDirection))
+            if (hasChangedDirection && newDirection != Directions.Opposite(lastDirection)
+                                    && _directionQueue.Count < 2)
             {
                 _directionQueue.Enqueue(newDirection);
             }

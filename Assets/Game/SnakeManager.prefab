@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snakePrefab: {fileID: 3260957587943132577, guid: c351fd31e96e749cabc683ae3fe12bd2, type: 3}
-  foodPrefab: {fileID: 501864309173797182, guid: d7037d71feace4943ac5a78e3c1f5fa8, type: 3}
+  spawnPoint: {fileID: 0}
 --- !u!114 &-6281225218477631439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151fed18c6bf468ab75ee60cf0a29004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundPrefab: {fileID: 4098376638391758114, guid: ada2f257df34c47f69860a8abceed398, type: 3}
   dimensions:
     x: -5
     y: -5
