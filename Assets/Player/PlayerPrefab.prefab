@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a246a21de9944ae5afbec1521c7fcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingDirection: 1
 --- !u!114 &-8898408124686151506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,4 +72,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce14ff65556497495a8db126fa9f7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numDigestionFrames: 3
+  numDigestionFrames: 6

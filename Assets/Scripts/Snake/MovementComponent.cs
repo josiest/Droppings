@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Board;
@@ -72,6 +73,11 @@ namespace Snake
         private void OnDisable()
         {
             _actionMappings.playerMovement.Disable();
+        }
+
+        public void Reset()
+        {
+            _directionQueue.Clear();
         }
     }
 }

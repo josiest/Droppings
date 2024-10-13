@@ -44,7 +44,8 @@ namespace Snake
 
         public void RespawnSnake()
         {
-            Snake?.ResetTo(_startPosition, _startDirection);
+            var direction = Snake ? Snake.Movement.Direction : _startDirection;
+            Snake?.ResetTo(_startPosition, direction);
         }
     }
 }

@@ -79,6 +79,10 @@ namespace Snake
 
         public void ResetTo(Vector2Int headPosition, CardinalDirection facingDirection)
         {
+            ShouldLayDropping = false;
+            Movement.Reset();
+            Digestion.Reset();
+
             var delta = Directions.AsVector2Int(Directions.Opposite(facingDirection));
             var bodyPosition = headPosition;
             foreach (var segment in _segments)
@@ -86,6 +90,7 @@ namespace Snake
                 segment.Position = bodyPosition;
                 bodyPosition += delta;
             }
+            Movement.Direction = facingDirection;
         }
 
         public void MoveInDirection(CardinalDirection direction)
