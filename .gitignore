@@ -76,6 +76,7 @@ crashlytics-build.properties
 **/.idea/shelf/*
 **/.idea/dictionaries
 **/.idea/httpRequests/
+*.DotSettings
 
 # Sensitive or high-churn files
 **/.idea/**/dataSources/
@@ -102,3 +103,5 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+*Build*/

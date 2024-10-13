@@ -15,14 +15,14 @@ namespace Snake
 
         /** The object used for each dropping */
         [SerializeField] public GameObject droppingPrefab;
+
+        /** The amount of body segments the snake has */
+        [SerializeField] private int numSegments = 4;
         
         public SnakeDigestion Digestion { get; private set; }
         public MovementComponent Movement { get; private set; }
 
         public bool ShouldLayDropping { get; set;  }
-
-        /** The amount of body segments the snake has */
-        private const int NumSegments = 4;
         
         public BoardPiece Head => _segments.First.Value;
         public BoardPiece Tail => _segments.Last.Value;
@@ -71,7 +71,7 @@ namespace Snake
 
         public void PopulateBody(GameBoard board)
         {
-            for (int i = 0; i < NumSegments; i++)
+            for (int i = 0; i < numSegments; i++)
             {
                 _segments.AddLast(board.CreatePiece<BoardPiece>(bodySegmentPrefab, transform));
             }

@@ -220,6 +220,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "playerActions",
+            "id": "842cd1f7-fde4-4205-8b52-1be6463ec206",
+            "actions": [
+                {
+                    "name": "layDropping",
+                    "type": "Button",
+                    "id": "2952023e-7bc1-4fa7-b3c3-6d381889926f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4a468295-5a9d-48c0-91b3-f09591bd2e2e",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "layDropping",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b27a2cf6-8d24-4667-98fd-ad28a68bd214",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "layDropping",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
