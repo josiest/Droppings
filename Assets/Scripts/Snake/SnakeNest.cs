@@ -14,9 +14,12 @@ namespace Snake
 
         private Vector2Int _startPosition = Vector2Int.zero;
         private CardinalDirection _startDirection = CardinalDirection.East;
+
+        public delegate void SnakeSpawnedEvent(SnakeBody snake);
+        public SnakeSpawnedEvent OnSnakeSpawned;
         
         /** A reference to the spawned snake */
-        private SnakeBody _snake;
+        public SnakeBody Snake { get; private set; }
 
         public void Awake()
         {
@@ -35,14 +38,13 @@ namespace Snake
             {
                 Debug.LogWarning("Snake nest has no spawn point. Using default instead.");
             }
-            _snake = SnakeBody.SpawnAt(snakePrefab, board, _startPosition, _startDirection);
-            SceneSubsystems.Find<DivineFruitTree>()?
-                           .DropFruit(board.RandomOpenSpace());
+            Snake = SnakeBody.SpawnAt(snakePrefab, board, _startPosition, _startDirection);
+            OnSnakeSpawned(Snake);
         }
 
         public void RespawnSnake()
         {
-            _snake?.ResetTo(_startPosition, _startDirection);
+            Snake?.ResetTo(_startPosition, _startDirection);
         }
     }
 }
