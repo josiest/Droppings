@@ -1,4 +1,4 @@
-﻿using Scene;
+﻿using Subsystems;
 using UnityEngine;
 
 namespace Board
@@ -15,9 +15,9 @@ namespace Board
                 transform.position = new Vector3(value.x, value.y, 0f);
             }
         }
-        public virtual void Awake()
+        protected virtual void Start()
         {
-            SceneSubsystems.Find<GameBoard>()?.AddPiece(this);
+            SceneSubsystemLocator.Find<GameBoard>()?.AddPiece(this);
         }
         public virtual void CollideWith(BoardPiece other)
         {

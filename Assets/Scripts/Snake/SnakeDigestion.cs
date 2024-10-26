@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Board;
-using Scene;
+using Subsystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,7 +23,7 @@ namespace Snake
         public void Awake()
         {
             _snakeBody = GetComponent<SnakeBody>();
-            SceneSubsystems.Find<TickSystem>()?.AddTickable(this);
+            SceneSubsystemLocator.Find<TickSystem>()?.AddTickable(this);
 
             _actionMappings = new ActionDefinition();
             _actionMappings.playerActions.layDropping.performed += OnLayDroppingPressed;

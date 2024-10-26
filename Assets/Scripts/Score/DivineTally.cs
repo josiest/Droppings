@@ -1,5 +1,5 @@
 using Food;
-using Scene;
+using Subsystems;
 using UnityEngine;
 
 namespace Score
@@ -8,18 +8,18 @@ namespace Score
     public class DivineTally : MonoBehaviour
     {
         [SerializeField] private int score = 5;
-        private DivineAbacus _divineAbacus;
+        private DivineAbacus divineAbacus;
 
         public void Start()
         {
-            _divineAbacus = SceneSubsystems.Find<DivineAbacus>();
+            divineAbacus = SceneSubsystemLocator.Find<DivineAbacus>();
             var pickupComponent = GetComponent<Pickup>();
             pickupComponent.OnConsumed += OnConsumed;
         }
 
         private void OnConsumed()
         {
-            _divineAbacus.Score += score;
+            divineAbacus.Score += score;
         }
     }
     

@@ -1,21 +1,22 @@
 using Board;
-using Scene;
 using Snake;
+using Subsystems;
 using UnityEngine;
 
 namespace Food
 {
     public class FoodPickup : Pickup
     {
-        private GameBoard _board;
-        public void Start()
+        private GameBoard board;
+        protected override void Start()
         {
-            _board = SceneSubsystems.Find<GameBoard>();
+            base.Start();
+            board = SceneSubsystemLocator.Find<GameBoard>();
         }
 
         protected override void ConsumeBy(SnakeBody snake)
         {
-            Position = _board ? _board.RandomOpenSpace() : Vector2Int.zero;
+            Position = board ? board.RandomOpenSpace() : Vector2Int.zero;
             snake.Digestion.Digest();
         }
     }

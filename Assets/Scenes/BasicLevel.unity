@@ -504,6 +504,10 @@ PrefabInstance:
       propertyPath: backgroundSprite
       value: 
       objectReference: {fileID: 50307325}
+    - target: {fileID: 1399246456048869863, guid: d800da1a996dd984e8f3fdef4bb135bd, type: 3}
+      propertyPath: FruitPrefab
+      value: 
+      objectReference: {fileID: 501864309173797182, guid: d7037d71feace4943ac5a78e3c1f5fa8, type: 3}
     - target: {fileID: 2458867998014872116, guid: d800da1a996dd984e8f3fdef4bb135bd, type: 3}
       propertyPath: m_Name
       value: SnakeManager
@@ -647,6 +651,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2794736979832937168, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880198331509449870, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880198331509449870, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880198331509449870, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880198331509449870, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6299785660816502134, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6299785660816502134, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6299785660816502134, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6299785660816502134, guid: 2b5d9799b73880247ace0417c885b012, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

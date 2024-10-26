@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Scene;
+using Subsystems;
 using UnityEngine;
 
 namespace Board
@@ -10,35 +10,35 @@ namespace Board
         /** How many frames per second to tick with */
         [SerializeField] private float ticksPerSecond = 4f;
         public float SecondsPerTick => 1f/ticksPerSecond;
-        private float _currentTickTimer;
+        private float currentTickTimer;
         private const float MinTickFrequency = 0.0001f;
 
-        private readonly List<ITickable> _tickables = new();
+        private readonly HashSet<ITickable> tickables = new();
 
         public void Awake()
         {
-            _tickables.AddRange(FindObjectsOfType<MonoBehaviour>().OfType<ITickable>());
+            tickables.UnionWith(FindObjectsOfType<MonoBehaviour>().OfType<ITickable>());
         }
 
         public void Start()
         {
             ticksPerSecond = Mathf.Max(MinTickFrequency, ticksPerSecond);
-            _currentTickTimer = SecondsPerTick;
+            currentTickTimer = SecondsPerTick;
         }
 
         public void Update()
         {
-            _currentTickTimer -= Time.deltaTime;
-            while (_currentTickTimer <= 0f)
+            currentTickTimer -= Time.deltaTime;
+            while (currentTickTimer <= 0f)
             {
-                _tickables.ForEach(tickable => tickable.Tick());
-                _currentTickTimer += SecondsPerTick;
+                foreach (var tickable in tickables) { tickable.Tick(); }
+                currentTickTimer += SecondsPerTick;
             }
         }
 
         public void AddTickable(ITickable tickable)
         {
-            _tickables.Add(tickable);
+            tickables.Add(tickable);
         }
     }
 }

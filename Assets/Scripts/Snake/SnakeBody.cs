@@ -24,21 +24,21 @@ namespace Snake
 
         public bool ShouldLayDropping { get; set;  }
         
-        public BoardPiece Head => _segments.First.Value;
-        public BoardPiece Tail => _segments.Last.Value;
+        public BoardPiece Head => segments.First.Value;
+        public BoardPiece Tail => segments.Last.Value;
 
 
         /** Keeps track of each of the body segments */
-        private readonly LinkedList<BoardPiece> _segments = new();
+        private readonly LinkedList<BoardPiece> segments = new();
 
-        private GameBoard _board;
+        private GameBoard board;
         
         public static SnakeBody SpawnAt(GameObject snakePrefab, GameBoard board,
                                         Vector2Int headPosition, CardinalDirection facingDirection)
         {
             var snake = Instantiate(snakePrefab).GetComponent<SnakeBody>();
-            snake._board = board;
-            snake.PopulateBody(board);
+            snake.board = board;
+            snake.PopulateBody();
             snake.ResetTo(headPosition, facingDirection);
             snake.GetComponent<MovementComponent>().Direction = facingDirection;
             return snake;
@@ -69,11 +69,11 @@ namespace Snake
             Movement = GetComponent<MovementComponent>();
         }
 
-        public void PopulateBody(GameBoard board)
+        public void PopulateBody()
         {
             for (int i = 0; i < numSegments; i++)
             {
-                _segments.AddLast(board.CreatePiece<BoardPiece>(bodySegmentPrefab, transform));
+                segments.AddLast(board.CreatePiece<BoardPiece>(bodySegmentPrefab, transform));
             }
         }
 
@@ -85,7 +85,7 @@ namespace Snake
 
             var delta = Directions.AsVector2Int(Directions.Opposite(facingDirection));
             var bodyPosition = headPosition;
-            foreach (var segment in _segments)
+            foreach (var segment in segments)
             {
                 segment.Position = bodyPosition;
                 bodyPosition += delta;
@@ -95,39 +95,39 @@ namespace Snake
 
         public void MoveInDirection(CardinalDirection direction)
         {
-            if (_segments.Count == 0) { return; }
+            if (segments.Count == 0) { return; }
 
             // Pop the tail
             var tail = Tail;
             var tailPosition = Tail.GetComponent<BoardPiece>().Position;
-            _segments.RemoveLast();
+            segments.RemoveLast();
 
             // move the tail to the head + next direction
             var nextPosition = Head.GetComponent<BoardPiece>().Position +
                                Directions.AsVector2Int(direction);
 
-            if (nextPosition.x >= _board.Dimensions.xMax)
+            if (nextPosition.x >= board.Dimensions.xMax)
             {
-                nextPosition.x -= _board.Dimensions.width;
+                nextPosition.x -= board.Dimensions.width;
             }
-            else if (nextPosition.x < _board.Dimensions.xMin)
+            else if (nextPosition.x < board.Dimensions.xMin)
             {
-                nextPosition.x += _board.Dimensions.width;
+                nextPosition.x += board.Dimensions.width;
             }
 
-            if (nextPosition.y >= _board.Dimensions.yMax)
+            if (nextPosition.y >= board.Dimensions.yMax)
             {
-                nextPosition.y -= _board.Dimensions.height;
+                nextPosition.y -= board.Dimensions.height;
             }
-            else if (nextPosition.y < _board.Dimensions.yMin)
+            else if (nextPosition.y < board.Dimensions.yMin)
             {
-                nextPosition.y += _board.Dimensions.height;
+                nextPosition.y += board.Dimensions.height;
             }
 
             tail.GetComponent<BoardPiece>().Position = nextPosition;
             
             // Add the tail back to the front of the segment list as the new head
-            _segments.AddFirst(tail);
+            segments.AddFirst(tail);
             
             // Finally lay a dropping if needed
             if (ShouldLayDropping)
@@ -139,7 +139,7 @@ namespace Snake
 
         private void LayDropping(Vector2Int position)
         {
-            _board?.CreatePiece<Dropping>(droppingPrefab, position);
+            board?.CreatePiece<Dropping>(droppingPrefab, position);
         }
     }
 }

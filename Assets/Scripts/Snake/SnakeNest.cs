@@ -1,5 +1,5 @@
 ﻿using Board;
-using Scene;
+using Subsystems;
 using UnityEngine;
 
 namespace Snake
@@ -11,8 +11,8 @@ namespace Snake
         [SerializeField] public GameObject snakePrefab;
         [SerializeField] private SnakeSpawnPoint spawnPoint;
 
-        private Vector2Int _startPosition = Vector2Int.zero;
-        private CardinalDirection _startDirection = CardinalDirection.East;
+        private Vector2Int startPosition = Vector2Int.zero;
+        private CardinalDirection startDirection = CardinalDirection.East;
 
         public delegate void SnakeSpawnedEvent(SnakeBody snake);
         public SnakeSpawnedEvent OnSnakeSpawned;
@@ -20,9 +20,8 @@ namespace Snake
         /** A reference to the spawned snake */
         public SnakeBody Snake { get; private set; }
 
-        public void Awake()
+        private void Awake()
         {
-            var board = GetComponent<GameBoard>();
             if (!snakePrefab.GetComponent<SnakeBody>())
             {
                 Debug.LogWarning("Snake Prefab has no Snake Body component. Adding default now");
@@ -30,21 +29,24 @@ namespace Snake
             }
             if (spawnPoint)
             {
-                _startPosition = spawnPoint.Position;
-                _startDirection = spawnPoint.Direction;
+                startPosition = spawnPoint.Position;
+                startDirection = spawnPoint.Direction;
             }
             else
             {
                 Debug.LogWarning("Snake nest has no spawn point. Using default instead.");
             }
-            Snake = SnakeBody.SpawnAt(snakePrefab, board, _startPosition, _startDirection);
-            OnSnakeSpawned(Snake);
         }
-
-        public void RespawnSnake()
+        private void Start()
         {
-            var direction = Snake ? Snake.Movement.Direction : _startDirection;
-            Snake?.ResetTo(_startPosition, direction);
+            Snake = SnakeBody.SpawnAt(snakePrefab, GetComponent<GameBoard>(),
+                                      startPosition, startDirection);
+            OnSnakeSpawned?.Invoke(Snake);
+        }
+        public void Reset()
+        {
+            var direction = Snake ? Snake.Movement.Direction : startDirection;
+            Snake?.ResetTo(startPosition, direction);
         }
     }
 }

@@ -1,6 +1,6 @@
 using Board;
-using Scene;
 using Snake;
+using Subsystems;
 using UnityEngine;
 
 namespace Food
@@ -8,32 +8,29 @@ namespace Food
     [RequireComponent(typeof(GameBoard), typeof(SnakeNest))]
     public class DivineFruitTree : SceneSubsystem
     {
-        [SerializeField] private GameObject fruitPrefab;
-        private FoodPickup _fruit;
-        private GameBoard _board;
+        [SerializeField] private GameObject FruitPrefab;
+        private FoodPickup fruit;
+        private GameBoard board;
 
         public void Awake()
         {
-            if (!fruitPrefab.GetComponent<FoodPickup>())
+            if (!FruitPrefab.GetComponent<FoodPickup>())
             {
                 Debug.LogWarning("Fruit prefab has no FoodPickup component. Adding one now");
-                fruitPrefab.AddComponent<FoodPickup>();
+                FruitPrefab.AddComponent<FoodPickup>();
             }
 
-            _board = GetComponent<GameBoard>();
-            var snakeNest = GetComponent<SnakeNest>();
-            if (snakeNest.Snake) { SpawnFruit(); }
-            else { snakeNest.OnSnakeSpawned += _ => SpawnFruit(); }
+            board = GetComponent<GameBoard>();
+            GetComponent<SnakeNest>().OnSnakeSpawned += _ => SpawnFruit();
         }
 
         private void SpawnFruit()
         {
-            _fruit = _board.CreatePiece<FoodPickup>(fruitPrefab, _board.RandomOpenSpace());
+            fruit = board.CreatePiece<FoodPickup>(FruitPrefab, board.RandomOpenSpace());
         }
-
         public void DropFruit(Vector2Int position)
         {
-            if (_fruit) { _fruit.Position = position; }
+            if (fruit) { fruit.Position = position; }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Scene;
+using Subsystems;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,52 +9,52 @@ namespace Board
     [RequireComponent(typeof(TickSystem))]
     public class GameBoard : SceneSubsystem, ITickable
     {
+
         [SerializeField] private GameObject backgroundSprite;
         /** The dimensions of the board */
         [SerializeField] private RectInt dimensions = new(-5, -5, 10, 10);
         public RectInt Dimensions => dimensions;
 
-        private readonly List<BoardPiece> _pieces = new();
-        private readonly HashSet<BoardPiece> _dirtyCache = new();
-        public void Awake()
-        {
-            _pieces.AddRange(FindObjectsOfType<BoardPiece>());
-            GetComponent<TickSystem>().AddTickable(this);
+        private readonly List<BoardPiece> pieces = new();
+        private readonly HashSet<BoardPiece> dirtyCache = new();
 
-            if (!backgroundSprite.GetComponent<SpriteRenderer>())
-            {
-                Debug.LogWarning("Background prefab has no SpriteRenderer. Adding one now");
-                backgroundSprite.AddComponent<SpriteRenderer>();
-            }
+        private void Awake()
+        {
+            pieces.AddRange(FindObjectsOfType<BoardPiece>());
             backgroundSprite.transform.localScale = new Vector3(Dimensions.width, Dimensions.height, 1f);
+        }
+
+        private void Start()
+        {
+            GetComponent<TickSystem>().AddTickable(this);
         }
 
         public void Tick()
         {
-            foreach (var playerPiece in _pieces.Where(piece => piece.CompareTag("Player")))
+            foreach (var playerPiece in pieces.Where(piece => piece.CompareTag("Player")))
             {
-                foreach (var other in _pieces.Where(other => !other.CompareTag("Player"))
+                foreach (var other in pieces.Where(other => !other.CompareTag("Player"))
                                              .Where(other => playerPiece.Position == other.Position))
                 {
                     other.CollideWith(playerPiece);
                 }
             }
-            _pieces.RemoveAll(piece => _dirtyCache.Contains(piece));
-            foreach (var piece in _dirtyCache) { Destroy(piece.gameObject); }
-            _dirtyCache.Clear();
+            pieces.RemoveAll(piece => dirtyCache.Contains(piece));
+            foreach (var piece in dirtyCache) { Destroy(piece.gameObject); }
+            dirtyCache.Clear();
         }
 
         public T CreatePiece<T>(GameObject prefab) where T : BoardPiece
         {
             var piece = Instantiate(prefab, transform).GetComponent<T>();
-            _pieces.Add(piece);
+            pieces.Add(piece);
             return piece;
         }
 
         public T CreatePiece<T>(GameObject prefab, Transform parent) where T : BoardPiece
         {
             var piece = Instantiate(prefab, parent).GetComponent<T>();
-            _pieces.Add(piece);
+            pieces.Add(piece);
             return piece;
         }
 
@@ -74,22 +74,22 @@ namespace Board
 
         public void AddPiece(BoardPiece piece)
         {
-            _pieces.Add(piece);
+            pieces.Add(piece);
         }
 
         public BoardPiece FindPieceByTag(string searchTag)
         {
-            return _pieces.First(piece => piece.CompareTag(searchTag));
+            return pieces.First(piece => piece.CompareTag(searchTag));
         }
 
         public void RemovePiece(BoardPiece piece)
         {
-            _pieces.Remove(piece);
+            pieces.Remove(piece);
             Destroy(piece.gameObject);
         }
         public bool HasCollision(Vector2Int pos)
         {
-            return _pieces.Any(piece => piece.Position == pos);
+            return pieces.Any(piece => piece.Position == pos);
         }
 
         public Vector2Int RandomOpenSpace()
@@ -111,7 +111,7 @@ namespace Board
 
         public void ClearByTag(string clearTag)
         {
-            _dirtyCache.UnionWith(_pieces.Where(piece => piece.CompareTag(clearTag)));
+            dirtyCache.UnionWith(pieces.Where(piece => piece.CompareTag(clearTag)));
         }
     }
 }
