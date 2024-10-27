@@ -9,7 +9,7 @@
                     "name": "up",
                     "type": "Value",
                     "id": "01839de7-a52e-45f2-98ea-41a819c21963",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -229,7 +229,16 @@
                     "name": "layDropping",
                     "type": "Button",
                     "id": "2952023e-7bc1-4fa7-b3c3-6d381889926f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "pause",
+                    "type": "Button",
+                    "id": "dac5514a-7dbb-4763-b1e2-d08c65a43a2f",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -255,6 +264,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "layDropping",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a863bf70-65c9-4c66-b6b6-b22c86aec261",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

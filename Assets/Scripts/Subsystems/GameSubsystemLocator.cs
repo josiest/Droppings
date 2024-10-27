@@ -6,17 +6,10 @@ namespace Subsystems
     /**
      * <summary>
      * <para>A static interface for querying game subsystems.</para>
-     * 
+     *
      * <para>
      * In order to query a game subsystem, it must be attached to an object with a Game
      * Subsystem Locator.
-     * </para>
-     * </summary>
-     * 
-     * <remarks>
-     * <para>
-     * A game subsystem locator may be considered a "Service Locator" that finds the
-     * singleton instance of a game subsystem.
      * </para>
      * 
      * <para>
@@ -25,6 +18,13 @@ namespace Subsystems
      * locators have duplicate subsystems, the configuration of the subsystems
      * will be kept in the order their locators are found. Any excess locators will
      * be destroyed along with their game objects and any subsystems attached.
+     * </para>
+     * </summary>
+     * 
+     * <remarks>
+     * <para>
+     * A game subsystem locator may be considered a "Service Locator" that finds the
+     * singleton instance of a game subsystem.
      * </para>
      * </remarks>
      */

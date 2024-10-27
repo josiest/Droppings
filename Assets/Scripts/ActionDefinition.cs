@@ -31,7 +31,7 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
                     ""name"": ""up"",
                     ""type"": ""Value"",
                     ""id"": ""01839de7-a52e-45f2-98ea-41a819c21963"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -251,7 +251,16 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
                     ""name"": ""layDropping"",
                     ""type"": ""Button"",
                     ""id"": ""2952023e-7bc1-4fa7-b3c3-6d381889926f"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""dac5514a-7dbb-4763-b1e2-d08c65a43a2f"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -279,6 +288,17 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
                     ""action"": ""layDropping"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a863bf70-65c9-4c66-b6b6-b22c86aec261"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -294,6 +314,7 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
         // playerActions
         m_playerActions = asset.FindActionMap("playerActions", throwIfNotFound: true);
         m_playerActions_layDropping = m_playerActions.FindAction("layDropping", throwIfNotFound: true);
+        m_playerActions_pause = m_playerActions.FindAction("pause", throwIfNotFound: true);
     }
 
     ~@ActionDefinition()
@@ -432,11 +453,13 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_playerActions;
     private List<IPlayerActionsActions> m_PlayerActionsActionsCallbackInterfaces = new List<IPlayerActionsActions>();
     private readonly InputAction m_playerActions_layDropping;
+    private readonly InputAction m_playerActions_pause;
     public struct PlayerActionsActions
     {
         private @ActionDefinition m_Wrapper;
         public PlayerActionsActions(@ActionDefinition wrapper) { m_Wrapper = wrapper; }
         public InputAction @layDropping => m_Wrapper.m_playerActions_layDropping;
+        public InputAction @pause => m_Wrapper.m_playerActions_pause;
         public InputActionMap Get() { return m_Wrapper.m_playerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -449,6 +472,9 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
             @layDropping.started += instance.OnLayDropping;
             @layDropping.performed += instance.OnLayDropping;
             @layDropping.canceled += instance.OnLayDropping;
+            @pause.started += instance.OnPause;
+            @pause.performed += instance.OnPause;
+            @pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -456,6 +482,9 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
             @layDropping.started -= instance.OnLayDropping;
             @layDropping.performed -= instance.OnLayDropping;
             @layDropping.canceled -= instance.OnLayDropping;
+            @pause.started -= instance.OnPause;
+            @pause.performed -= instance.OnPause;
+            @pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -483,5 +512,6 @@ public partial class @ActionDefinition: IInputActionCollection2, IDisposable
     public interface IPlayerActionsActions
     {
         void OnLayDropping(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

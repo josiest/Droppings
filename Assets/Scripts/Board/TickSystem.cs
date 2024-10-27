@@ -7,13 +7,45 @@ namespace Board
 {
     public class TickSystem : SceneSubsystem
     {
+        //
+        // Configuration
+        //
+
         /** How many frames per second to tick with */
         [SerializeField] private float ticksPerSecond = 4f;
+
+        //
+        // Public Interface
+        //
+
         public float SecondsPerTick => 1f/ticksPerSecond;
+
+        public void Pause()
+        {
+            enabled = false;
+        }
+
+        public void Resume()
+        {
+            enabled = true;
+        }
+                
+        public void AddTickable(ITickable tickable)
+        {
+            tickables.Add(tickable);
+        }
+        
+        //
+        // Internal Interface
+        //
+
         private float currentTickTimer;
         private const float MinTickFrequency = 0.0001f;
-
         private readonly HashSet<ITickable> tickables = new();
+
+        //
+        // Unity Events
+        //
 
         public void Awake()
         {
@@ -36,9 +68,5 @@ namespace Board
             }
         }
 
-        public void AddTickable(ITickable tickable)
-        {
-            tickables.Add(tickable);
-        }
     }
 }
