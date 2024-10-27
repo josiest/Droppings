@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.MainMenu
 {
     [RequireComponent(typeof(Button))]
     public class SceneLoaderWidget : MonoBehaviour
