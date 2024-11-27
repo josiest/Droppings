@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5512265557955392066}
   - component: {fileID: 7289551308534703447}
   - component: {fileID: -6281225218477631439}
-  - component: {fileID: 3401575138787031444}
   - component: {fileID: 5073001801344659554}
   - component: {fileID: 1399246456048869863}
   - component: {fileID: 7537961809013822495}
@@ -69,19 +68,6 @@ MonoBehaviour:
     y: -5
     width: 10
     height: 10
---- !u!114 &3401575138787031444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2458867998014872116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a434fad84fb4a58997d98462a2ac054, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ticksPerSecond: 4
 --- !u!114 &5073001801344659554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87dfbf8a37846de9957b299eae26283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitPrefab: {fileID: 501864309173797182, guid: d7037d71feace4943ac5a78e3c1f5fa8, type: 3}
+  FruitPrefab: {fileID: 0}
 --- !u!114 &7537961809013822495
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -39,7 +39,7 @@ namespace Board
             foreach (var subsystemType in SubsystemLocators.GetAllSubsystemTypes<GameBoardSubsystem>())
             {
                 var subsystem = gameObject.AddComponent(subsystemType);
-                var onRegisterMethod = subsystemType.GetMethod("OnRegister", BindingFlags.Instance);
+                var onRegisterMethod = subsystemType.GetMethod("OnRegisterGameBoard", BindingFlags.Instance);
                 if (onRegisterMethod == null) { continue; }
 
                 var methodParams = onRegisterMethod.GetParameters();

@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Subsystems;
 using UnityEngine;
 
 namespace Board
 {
-    public class TickSystem : SceneSubsystem
+    public class TickSystem : GameBoardSubsystem
     {
         //
         // Configuration
         //
 
         /** How many frames per second to tick with */
-        [SerializeField] private float ticksPerSecond = 4f;
+        private float ticksPerSecond = 4f;
 
         //
         // Public Interface
@@ -49,6 +48,14 @@ namespace Board
 
         public void Awake()
         {
+            var settings = Resources.Load<TickSettings>(TickSettings.ResourcePath);
+            if (!settings)
+            {
+                settings = ScriptableObject.CreateInstance<TickSettings>();
+                Debug.LogWarning($"Unable to load tick settings from {TickSettings.ResourcePath}, " +
+                                  "using default instead.");
+            }
+            ticksPerSecond = settings.ticksPerSecond;
             tickables.UnionWith(FindObjectsOfType<MonoBehaviour>().OfType<ITickable>());
         }
 

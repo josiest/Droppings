@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Board;
-using Subsystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,63 +11,66 @@ namespace Snake
     {
         /** The max number of frames before a snake lays a dropping after consuming food */
         [SerializeField] public int numDigestionFrames = 3;
-        private ActionDefinition _actionMappings;
+        private ActionDefinition actionMappings;
 
         /** The current number of frames until a dropping is layed */
-        private readonly List<int> _droppingTimers = new();
+        private readonly List<int> droppingTimers = new();
 
         /** A reference to the snake body */
-        private SnakeBody _snakeBody;
+        private SnakeBody snakeBody;
 
-        public void Awake()
+        private void Awake()
         {
-            _snakeBody = GetComponent<SnakeBody>();
-            SceneSubsystemLocator.Find<TickSystem>()?.AddTickable(this);
-
-            _actionMappings = new ActionDefinition();
-            _actionMappings.playerActions.layDropping.performed += OnLayDroppingPressed;
+            snakeBody = GetComponent<SnakeBody>();
+            actionMappings = new ActionDefinition();
+            actionMappings.playerActions.layDropping.performed += OnLayDroppingPressed;
+        }
+        
+        private void Start()
+        {
+            GameBoardSystem.Find<TickSystem>()?.AddTickable(this);
         }
 
         public void Reset()
         {
-            _droppingTimers.Clear();
+            droppingTimers.Clear();
         }
 
         public void Tick()
         {
-            for (int i = 0; i < _droppingTimers.Count; i++)
+            for (int i = 0; i < droppingTimers.Count; i++)
             {
-                _droppingTimers[i] -= 1;
+                droppingTimers[i] -= 1;
             }
-            if (_droppingTimers.Any(timer => timer <= 0))
+            if (droppingTimers.Any(timer => timer <= 0))
             {
-                _snakeBody.ShouldLayDropping = true;
+                snakeBody.ShouldLayDropping = true;
             }
-            _droppingTimers.RemoveAll(timer => timer <= 0);
+            droppingTimers.RemoveAll(timer => timer <= 0);
         }
 
         private void OnLayDroppingPressed(InputAction.CallbackContext ctx)
         {
-            if (!ctx.ReadValueAsButton() || _droppingTimers.Count == 0
-                                         || _droppingTimers[0] <= 0)
+            if (!ctx.ReadValueAsButton() || droppingTimers.Count == 0
+                                         || droppingTimers[0] <= 0)
             {
                 return;
             }
-            _droppingTimers.RemoveAt(0);
-            _snakeBody.ShouldLayDropping = true;
+            droppingTimers.RemoveAt(0);
+            snakeBody.ShouldLayDropping = true;
         }
 
         public void OnEnable()
         {
-            _actionMappings.Enable();
+            actionMappings.Enable();
         }
         public void OnDisable()
         {
-            _actionMappings.Disable();
+            actionMappings.Disable();
         }
         public void Digest()
         {
-            _droppingTimers.Add(numDigestionFrames);
+            droppingTimers.Add(numDigestionFrames);
         }
     }
 }

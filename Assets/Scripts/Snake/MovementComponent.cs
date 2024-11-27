@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Board;
-using Subsystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,7 +29,7 @@ namespace Snake
 
         private void Start()
         {
-            SceneSubsystemLocator.Find<TickSystem>()?.AddTickable(this);
+            GameBoardSystem.Find<TickSystem>()?.AddTickable(this);
             if (actionMappings is null) { return; }
             actionMappings.playerMovement.up.performed +=
                 ctx => OnDirectionChanged(ctx, CardinalDirection.North);

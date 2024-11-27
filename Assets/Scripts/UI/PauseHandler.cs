@@ -1,5 +1,4 @@
 ﻿using Board;
-using Subsystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,14 +29,13 @@ namespace UI
         private void Awake()
         {
             actionMappings = new ActionDefinition();
-            tickSystem = SceneSubsystemLocator.Find<TickSystem>();
-
             actionMappings.playerActions.pause.performed += OnPaused;
             actionMappings.Enable();
             gameObject.SetActive(false);
         }
         private void OnEnable()
         {
+            if (!tickSystem) { tickSystem = GameBoardSystem.Find<TickSystem>(); }
             tickSystem.Pause();
         }
         private void OnDisable()

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Subsystems;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -30,7 +29,7 @@ namespace Board
 
         private void Start()
         {
-            SceneSubsystemLocator.Find<TickSystem>()?.AddTickable(this);
+            GameBoardSystem.Find<TickSystem>()?.AddTickable(this);
         }
 
         public void Tick()

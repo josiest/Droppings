@@ -12,7 +12,7 @@ namespace Board
 
         private void Start()
         {
-            SceneSubsystemLocator.Find<TickSystem>().AddTickable(this);
+            GameBoardSystem.Find<TickSystem>()?.AddTickable(this);
         } 
         public void Tick()
         {

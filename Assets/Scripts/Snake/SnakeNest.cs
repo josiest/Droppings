@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Snake
 {
-    [RequireComponent(typeof(GameBoard_DEPRECATED), typeof(TickSystem))]
+    [RequireComponent(typeof(GameBoard_DEPRECATED))]
     public class SnakeNest : SceneSubsystem
     {
         /** The snake player object that will be spawned at the start of the game */
