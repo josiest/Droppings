@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Subsystems;
 using UnityEngine;
@@ -6,39 +7,35 @@ using Random = UnityEngine.Random;
 
 namespace Board
 {
-    [RequireComponent(typeof(TickSystem))]
     public class GameBoard : SceneSubsystem, ITickable
     {
+        private const int MaxIterations = 500;
+        public const string PlayerTag = "Player";
 
         [SerializeField] private GameObject backgroundSprite;
         /** The dimensions of the board */
         [SerializeField] private RectInt dimensions = new(-5, -5, 10, 10);
         public RectInt Dimensions => dimensions;
 
+        public IEnumerable<BoardPiece> Pieces => pieces;
         private readonly List<BoardPiece> pieces = new();
+        
         private readonly HashSet<BoardPiece> dirtyCache = new();
 
         private void Awake()
         {
             pieces.AddRange(FindObjectsOfType<BoardPiece>());
-            backgroundSprite.transform.localScale = new Vector3(Dimensions.width, Dimensions.height, 1f);
+            // TODO: Create ScalableBoardBackground component to manage this scaling behavior
+            // backgroundSprite.transform.localScale = new Vector3(Dimensions.width, Dimensions.height, 1f);
         }
 
         private void Start()
         {
-            GetComponent<TickSystem>().AddTickable(this);
+            SceneSubsystemLocator.Find<TickSystem>()?.AddTickable(this);
         }
 
         public void Tick()
         {
-            foreach (var playerPiece in pieces.Where(piece => piece.CompareTag("Player")))
-            {
-                foreach (var other in pieces.Where(other => !other.CompareTag("Player"))
-                                             .Where(other => playerPiece.Position == other.Position))
-                {
-                    other.CollideWith(playerPiece);
-                }
-            }
             pieces.RemoveAll(piece => dirtyCache.Contains(piece));
             foreach (var piece in dirtyCache) { Destroy(piece.gameObject); }
             dirtyCache.Clear();
@@ -82,10 +79,9 @@ namespace Board
             return pieces.First(piece => piece.CompareTag(searchTag));
         }
 
-        public void RemovePiece(BoardPiece piece)
+        public void RemoveByTag(string searchTag)
         {
-            pieces.Remove(piece);
-            Destroy(piece.gameObject);
+            dirtyCache.UnionWith(pieces.Where(piece => piece.CompareTag(searchTag)));
         }
         public bool HasCollision(Vector2Int pos)
         {
@@ -95,8 +91,9 @@ namespace Board
         public Vector2Int RandomOpenSpace()
         {
             var pos = RandomSpace();
-            while (HasCollision(pos))
+            for (int i = 0; i < MaxIterations; i++)
             {
+                if (!HasCollision(pos)) { return pos; }
                 pos = RandomSpace();
             }
             return pos;
@@ -107,11 +104,6 @@ namespace Board
             var x = Random.Range(Dimensions.x, Dimensions.x + Dimensions.width);
             var y = Random.Range(Dimensions.y, Dimensions.y + Dimensions.height);
             return new Vector2Int(x, y);
-        }
-
-        public void ClearByTag(string clearTag)
-        {
-            dirtyCache.UnionWith(pieces.Where(piece => piece.CompareTag(clearTag)));
         }
     }
 }

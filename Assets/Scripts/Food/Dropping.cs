@@ -10,26 +10,26 @@ namespace Food
     {
         public const string DroppingTag = "Dropping";
 
-        private GameBoard _board;
-        private DivineFruitTree _fruitTree;
-        private DivineAbacus _divineAbacus;
-        private SnakeNest _snakeNest;
+        private GameBoard board;
+        private DivineFruitTree fruitTree;
+        private DivineAbacus divineAbacus;
+        private SnakeNest snakeNest;
 
         protected override void Start()
         {
             base.Start();
-            _fruitTree = SceneSubsystemLocator.Find<DivineFruitTree>();
-            _snakeNest = SceneSubsystemLocator.Find<SnakeNest>();
-            _board = SceneSubsystemLocator.Find<GameBoard>();
-            _divineAbacus = SceneSubsystemLocator.Find<DivineAbacus>();
+            fruitTree = SceneSubsystemLocator.Find<DivineFruitTree>();
+            snakeNest = SceneSubsystemLocator.Find<SnakeNest>();
+            board = SceneSubsystemLocator.Find<GameBoard>();
+            divineAbacus = SceneSubsystemLocator.Find<DivineAbacus>();
         }
         protected override void ConsumeBy(SnakeBody snake)
         {
             snake.Digestion.Reset();
-            _divineAbacus?.Reset();
-            _board?.ClearByTag(DroppingTag);
-            _snakeNest?.Reset();
-            _fruitTree?.DropFruit(_board? _board.RandomOpenSpace() : Vector2Int.zero);
+            divineAbacus?.Reset();
+            board?.RemoveByTag(DroppingTag);
+            snakeNest?.Reset();
+            fruitTree?.DropFruit(board? board.RandomOpenSpace() : Vector2Int.zero);
         }
     }
 }
