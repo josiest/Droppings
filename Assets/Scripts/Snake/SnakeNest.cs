@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Snake
 {
-    [RequireComponent(typeof(GameBoard), typeof(TickSystem))]
+    [RequireComponent(typeof(GameBoard_DEPRECATED), typeof(TickSystem))]
     public class SnakeNest : SceneSubsystem
     {
         /** The snake player object that will be spawned at the start of the game */
@@ -39,7 +39,7 @@ namespace Snake
         }
         private void Start()
         {
-            Snake = SnakeBody.SpawnAt(snakePrefab, GetComponent<GameBoard>(),
+            Snake = SnakeBody.SpawnAt(snakePrefab, GetComponent<GameBoard_DEPRECATED>(),
                                       startPosition, startDirection);
             OnSnakeSpawned?.Invoke(Snake);
         }

@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Food
 {
-    [RequireComponent(typeof(GameBoard), typeof(SnakeNest))]
+    [RequireComponent(typeof(GameBoard_DEPRECATED), typeof(SnakeNest))]
     public class DivineFruitTree : SceneSubsystem
     {
         [SerializeField] private GameObject FruitPrefab;
         private FoodPickup fruit;
-        private GameBoard board;
+        private GameBoard_DEPRECATED boardDeprecated;
 
         public void Awake()
         {
@@ -20,13 +20,13 @@ namespace Food
                 FruitPrefab.AddComponent<FoodPickup>();
             }
 
-            board = GetComponent<GameBoard>();
+            boardDeprecated = GetComponent<GameBoard_DEPRECATED>();
             GetComponent<SnakeNest>().OnSnakeSpawned += _ => SpawnFruit();
         }
 
         private void SpawnFruit()
         {
-            fruit = board.CreatePiece<FoodPickup>(FruitPrefab, board.RandomOpenSpace());
+            fruit = boardDeprecated.CreatePiece<FoodPickup>(FruitPrefab, boardDeprecated.RandomOpenSpace());
         }
         public void DropFruit(Vector2Int position)
         {

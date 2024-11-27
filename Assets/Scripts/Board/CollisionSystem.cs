@@ -3,11 +3,11 @@ using Subsystems;
 
 namespace Board
 {
-    public class CollisionSystem : SceneSubsystem, ITickable
+    public class CollisionSystem : GameBoardSubsystem, ITickable
     {
         private void Awake()
         {
-            board = SceneSubsystemLocator.Find<GameBoard>();
+            boardDeprecated = SceneSubsystemLocator.Find<GameBoard_DEPRECATED>();
         }
 
         private void Start()
@@ -16,16 +16,18 @@ namespace Board
         } 
         public void Tick()
         {
-            foreach (var playerPiece in board.Pieces.Where(piece => piece.CompareTag(GameBoard.PlayerTag)))
+            foreach (var playerPiece in boardDeprecated.Pieces
+                         .Where(piece => piece.CompareTag(GameBoard_DEPRECATED.PlayerTag)))
             {
-                foreach (var other in board.Pieces.Where(other => !other.CompareTag(GameBoard.PlayerTag))
-                                                  .Where(other => playerPiece.Position == other.Position))
+                foreach (var other in boardDeprecated.Pieces
+                             .Where(other => !other.CompareTag(GameBoard_DEPRECATED.PlayerTag))
+                             .Where(other => playerPiece.Position == other.Position))
                 {
                     other.CollideWith(playerPiece);
                 }
             }
         }
 
-        private GameBoard board;
+        private GameBoard_DEPRECATED boardDeprecated;
     }
 }

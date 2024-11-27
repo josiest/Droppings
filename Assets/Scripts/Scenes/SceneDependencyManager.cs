@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scene
+namespace Scenes
 {
     public class SceneDependencyManager : MonoBehaviour
     {

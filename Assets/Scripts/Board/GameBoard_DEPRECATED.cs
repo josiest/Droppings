@@ -6,11 +6,12 @@ using Random = UnityEngine.Random;
 
 namespace Board
 {
-    [RequireComponent(typeof(SpriteRenderer))]
-    public class GameBoard : MonoBehaviour, ITickable
+    public class GameBoard_DEPRECATED : SceneSubsystem, ITickable
     {
+        private const int MaxIterations = 500;
         public const string PlayerTag = "Player";
 
+        [SerializeField] private GameObject backgroundSprite;
         /** The dimensions of the board */
         [SerializeField] private RectInt dimensions = new(-5, -5, 10, 10);
         public RectInt Dimensions => dimensions;
@@ -22,7 +23,6 @@ namespace Board
 
         private void Awake()
         {
-            GameBoardSystem.RegisterBoard(this);
             pieces.AddRange(FindObjectsOfType<BoardPiece>());
             // TODO: Create ScalableBoardBackground component to manage this scaling behavior
             // backgroundSprite.transform.localScale = new Vector3(Dimensions.width, Dimensions.height, 1f);
@@ -90,7 +90,7 @@ namespace Board
         public Vector2Int RandomOpenSpace()
         {
             var pos = RandomSpace();
-            for (int i = 0; i < Dimensions.width * Dimensions.height; i++)
+            for (int i = 0; i < MaxIterations; i++)
             {
                 if (!HasCollision(pos)) { return pos; }
                 pos = RandomSpace();

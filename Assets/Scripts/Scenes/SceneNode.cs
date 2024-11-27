@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scene
+namespace Scenes
 {
     [CreateAssetMenu]
     public class SceneNode : ScriptableObject

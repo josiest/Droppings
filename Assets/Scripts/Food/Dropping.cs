@@ -10,7 +10,7 @@ namespace Food
     {
         public const string DroppingTag = "Dropping";
 
-        private GameBoard board;
+        private GameBoard_DEPRECATED boardDeprecated;
         private DivineFruitTree fruitTree;
         private DivineAbacus divineAbacus;
         private SnakeNest snakeNest;
@@ -20,16 +20,16 @@ namespace Food
             base.Start();
             fruitTree = SceneSubsystemLocator.Find<DivineFruitTree>();
             snakeNest = SceneSubsystemLocator.Find<SnakeNest>();
-            board = SceneSubsystemLocator.Find<GameBoard>();
+            boardDeprecated = SceneSubsystemLocator.Find<GameBoard_DEPRECATED>();
             divineAbacus = SceneSubsystemLocator.Find<DivineAbacus>();
         }
         protected override void ConsumeBy(SnakeBody snake)
         {
             snake.Digestion.Reset();
             divineAbacus?.Reset();
-            board?.RemoveByTag(DroppingTag);
+            boardDeprecated?.RemoveByTag(DroppingTag);
             snakeNest?.Reset();
-            fruitTree?.DropFruit(board? board.RandomOpenSpace() : Vector2Int.zero);
+            fruitTree?.DropFruit(boardDeprecated? boardDeprecated.RandomOpenSpace() : Vector2Int.zero);
         }
     }
 }

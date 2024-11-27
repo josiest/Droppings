@@ -7,16 +7,16 @@ namespace Food
 {
     public class FoodPickup : Pickup
     {
-        private GameBoard board;
+        private GameBoard_DEPRECATED boardDeprecated;
         protected override void Start()
         {
             base.Start();
-            board = SceneSubsystemLocator.Find<GameBoard>();
+            boardDeprecated = SceneSubsystemLocator.Find<GameBoard_DEPRECATED>();
         }
 
         protected override void ConsumeBy(SnakeBody snake)
         {
-            Position = board ? board.RandomOpenSpace() : Vector2Int.zero;
+            Position = boardDeprecated ? boardDeprecated.RandomOpenSpace() : Vector2Int.zero;
             snake.Digestion.Digest();
         }
     }

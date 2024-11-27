@@ -17,7 +17,7 @@ namespace Board
         }
         protected virtual void Start()
         {
-            SceneSubsystemLocator.Find<GameBoard>()?.AddPiece(this);
+            SceneSubsystemLocator.Find<GameBoard_DEPRECATED>()?.AddPiece(this);
         }
         public virtual void CollideWith(BoardPiece other)
         {
