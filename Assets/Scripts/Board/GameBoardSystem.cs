@@ -19,7 +19,8 @@ namespace Board
             system.Board = newBoard;
             system.RegisterSubsystems();
         }
-        
+
+        public static GameBoard CurrentBoard => instance?.Board;
         public GameBoard Board { get; private set; }
 
         private static GameBoardSystem GetOrCreateInstance()
@@ -39,7 +40,9 @@ namespace Board
             foreach (var subsystemType in SubsystemLocators.GetAllSubsystemTypes<GameBoardSubsystem>())
             {
                 var subsystem = gameObject.AddComponent(subsystemType);
-                var onRegisterMethod = subsystemType.GetMethod("OnRegisterGameBoard", BindingFlags.Instance);
+                var onRegisterMethod = subsystemType
+                    .GetMethod("OnRegisterGameBoard", BindingFlags.Instance | BindingFlags.Public
+                                                                            | BindingFlags.NonPublic);
                 if (onRegisterMethod == null) { continue; }
 
                 var methodParams = onRegisterMethod.GetParameters();

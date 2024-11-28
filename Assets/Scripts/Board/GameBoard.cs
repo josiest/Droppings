@@ -5,7 +5,6 @@ using Random = UnityEngine.Random;
 
 namespace Board
 {
-    [RequireComponent(typeof(SpriteRenderer))]
     public class GameBoard : MonoBehaviour, ITickable
     {
         public const string PlayerTag = "Player";

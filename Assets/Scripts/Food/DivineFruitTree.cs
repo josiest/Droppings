@@ -1,32 +1,37 @@
 using Board;
 using Snake;
-using Subsystems;
 using UnityEngine;
 
 namespace Food
 {
-    [RequireComponent(typeof(GameBoard_DEPRECATED), typeof(SnakeNest))]
-    public class DivineFruitTree : SceneSubsystem
+    public class DivineFruitTree : GameBoardSubsystem
     {
-        [SerializeField] private GameObject FruitPrefab;
+        private FoodPickup fruitPrefab;
         private FoodPickup fruit;
-        private GameBoard_DEPRECATED boardDeprecated;
+        private GameBoard board;
+
+        private void OnRegisterGameBoard(GameBoard newBoard)
+        {
+            board = newBoard;
+        }
 
         public void Awake()
         {
-            if (!FruitPrefab.GetComponent<FoodPickup>())
-            {
-                Debug.LogWarning("Fruit prefab has no FoodPickup component. Adding one now");
-                FruitPrefab.AddComponent<FoodPickup>();
-            }
+            var settings = Resources.Load<TreeSettings>(TreeSettings.ResourcePath);
+            if (!settings) { settings = ScriptableObject.CreateInstance<TreeSettings>(); }
+            fruitPrefab = settings.fruitPrefab;
+        }
 
-            boardDeprecated = GetComponent<GameBoard_DEPRECATED>();
-            GetComponent<SnakeNest>().OnSnakeSpawned += _ => SpawnFruit();
+        private void Start()
+        {
+            var snakeNest = GameBoardSystem.Find<SnakeNest>();
+            if (snakeNest?.Snake) { SpawnFruit(); }
+            else if (snakeNest) { snakeNest.OnSnakeSpawned += _ => SpawnFruit(); }
         }
 
         private void SpawnFruit()
         {
-            fruit = boardDeprecated.CreatePiece<FoodPickup>(FruitPrefab, boardDeprecated.RandomOpenSpace());
+            fruit = board.CreatePiece<FoodPickup>(fruitPrefab.gameObject, board.RandomOpenSpace());
         }
         public void DropFruit(Vector2Int position)
         {

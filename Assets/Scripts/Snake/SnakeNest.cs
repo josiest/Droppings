@@ -1,32 +1,34 @@
 ﻿using Board;
-using Subsystems;
 using UnityEngine;
 
 namespace Snake
 {
-    [RequireComponent(typeof(GameBoard_DEPRECATED))]
-    public class SnakeNest : SceneSubsystem
+    public class SnakeNest : GameBoardSubsystem
     {
         /** The snake player object that will be spawned at the start of the game */
-        [SerializeField] public GameObject snakePrefab;
-        [SerializeField] private SnakeSpawnPoint spawnPoint;
+        private SnakeBody snakePrefab;
+        private SnakeSpawnPoint spawnPoint;
 
         private Vector2Int startPosition = Vector2Int.zero;
         private CardinalDirection startDirection = CardinalDirection.East;
 
         public delegate void SnakeSpawnedEvent(SnakeBody snake);
         public SnakeSpawnedEvent OnSnakeSpawned;
-        
+
         /** A reference to the spawned snake */
         public SnakeBody Snake { get; private set; }
 
         private void Awake()
         {
-            if (!snakePrefab.GetComponent<SnakeBody>())
+            var settings = Resources.Load<NestSettings>(NestSettings.ResourcePath);
+            if (!settings)
             {
-                Debug.LogWarning("Snake Prefab has no Snake Body component. Adding default now");
-                snakePrefab.AddComponent<SnakeBody>();
+                settings = ScriptableObject.CreateInstance<NestSettings>();
+                Debug.LogWarning($"Unable to load nest settings at {NestSettings.ResourcePath}, " +
+                                  "using default settings instead");
             }
+            snakePrefab = settings.snakePrefab;
+            spawnPoint = FindObjectOfType<SnakeSpawnPoint>();
             if (spawnPoint)
             {
                 startPosition = spawnPoint.Position;
@@ -39,7 +41,7 @@ namespace Snake
         }
         private void Start()
         {
-            Snake = SnakeBody.SpawnAt(snakePrefab, GetComponent<GameBoard_DEPRECATED>(),
+            Snake = SnakeBody.SpawnAt(snakePrefab.gameObject, GameBoardSystem.CurrentBoard,
                                       startPosition, startDirection);
             OnSnakeSpawned?.Invoke(Snake);
         }

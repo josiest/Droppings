@@ -30,14 +30,13 @@ namespace Snake
 
         /** Keeps track of each of the body segments */
         private readonly LinkedList<BoardPiece> segments = new();
-
-        private GameBoard_DEPRECATED boardDeprecated;
+        private GameBoard board;
         
-        public static SnakeBody SpawnAt(GameObject snakePrefab, GameBoard_DEPRECATED boardDeprecated,
+        public static SnakeBody SpawnAt(GameObject snakePrefab, GameBoard board,
                                         Vector2Int headPosition, CardinalDirection facingDirection)
         {
             var snake = Instantiate(snakePrefab).GetComponent<SnakeBody>();
-            snake.boardDeprecated = boardDeprecated;
+            snake.board = board;
             snake.PopulateBody();
             snake.ResetTo(headPosition, facingDirection);
             snake.GetComponent<MovementComponent>().Direction = facingDirection;
@@ -73,7 +72,7 @@ namespace Snake
         {
             for (int i = 0; i < numSegments; i++)
             {
-                segments.AddLast(boardDeprecated.CreatePiece<BoardPiece>(bodySegmentPrefab, transform));
+                segments.AddLast(board.CreatePiece<BoardPiece>(bodySegmentPrefab, transform));
             }
         }
 
@@ -106,22 +105,22 @@ namespace Snake
             var nextPosition = Head.GetComponent<BoardPiece>().Position +
                                Directions.AsVector2Int(direction);
 
-            if (nextPosition.x >= boardDeprecated.Dimensions.xMax)
+            if (nextPosition.x >= board.Dimensions.xMax)
             {
-                nextPosition.x -= boardDeprecated.Dimensions.width;
+                nextPosition.x -= board.Dimensions.width;
             }
-            else if (nextPosition.x < boardDeprecated.Dimensions.xMin)
+            else if (nextPosition.x < board.Dimensions.xMin)
             {
-                nextPosition.x += boardDeprecated.Dimensions.width;
+                nextPosition.x += board.Dimensions.width;
             }
 
-            if (nextPosition.y >= boardDeprecated.Dimensions.yMax)
+            if (nextPosition.y >= board.Dimensions.yMax)
             {
-                nextPosition.y -= boardDeprecated.Dimensions.height;
+                nextPosition.y -= board.Dimensions.height;
             }
-            else if (nextPosition.y < boardDeprecated.Dimensions.yMin)
+            else if (nextPosition.y < board.Dimensions.yMin)
             {
-                nextPosition.y += boardDeprecated.Dimensions.height;
+                nextPosition.y += board.Dimensions.height;
             }
 
             tail.GetComponent<BoardPiece>().Position = nextPosition;
@@ -139,7 +138,7 @@ namespace Snake
 
         private void LayDropping(Vector2Int position)
         {
-            boardDeprecated?.CreatePiece<Dropping>(droppingPrefab, position);
+            board?.CreatePiece<Dropping>(droppingPrefab, position);
         }
     }
 }
