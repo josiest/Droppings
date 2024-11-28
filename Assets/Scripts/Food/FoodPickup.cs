@@ -1,23 +1,28 @@
 using Board;
 using Snake;
-using Subsystems;
 using UnityEngine;
 
 namespace Food
 {
     public class FoodPickup : Pickup
     {
-        private GameBoard_DEPRECATED boardDeprecated;
+        public const string DefaultPath = "Defaults/Food";
+
+        // Unity Events
         protected override void Start()
         {
             base.Start();
-            boardDeprecated = SceneSubsystemLocator.Find<GameBoard_DEPRECATED>();
+            board = GameBoardSystem.CurrentBoard;
         }
 
+        // Pickup Interface
         protected override void ConsumeBy(SnakeBody snake)
         {
-            Position = boardDeprecated ? boardDeprecated.RandomOpenSpace() : Vector2Int.zero;
+            Position = board ? board.RandomOpenSpace() : Vector2Int.zero;
             snake.Digestion.Digest();
         }
+        
+        // Internal Interface
+        private GameBoard board;
     }
 }

@@ -18,8 +18,13 @@ namespace Food
         public void Awake()
         {
             var settings = Resources.Load<TreeSettings>(TreeSettings.ResourcePath);
-            if (!settings) { settings = ScriptableObject.CreateInstance<TreeSettings>(); }
-            fruitPrefab = settings.fruitPrefab;
+            if (!settings)
+            {
+                Debug.LogWarning($"Unable to load tree settings at {TreeSettings.ResourcePath}, " +
+                                  "using default settings instead");
+                settings = ScriptableObject.CreateInstance<TreeSettings>();
+            }
+            fruitPrefab = settings.FruitPrefab;
         }
 
         private void Start()
