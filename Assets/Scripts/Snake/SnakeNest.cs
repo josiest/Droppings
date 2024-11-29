@@ -23,11 +23,19 @@ namespace Snake
             var settings = Resources.Load<NestSettings>(NestSettings.ResourcePath);
             if (!settings)
             {
-                settings = ScriptableObject.CreateInstance<NestSettings>();
-                Debug.LogWarning($"Unable to load nest settings at {NestSettings.ResourcePath}, " +
-                                  "using default settings instead");
+                Debug.LogError($"Unable to load nest settings at {NestSettings.ResourcePath}. " +
+                                "The snake will not be able to load without it.");
+                Application.Quit();
+                return;
             }
             snakePrefab = settings.snakePrefab;
+            if (!snakePrefab)
+            {
+                Debug.LogError($"Nest settings at {NestSettings.ResourcePath} have no snake prefab. " +
+                                "The snake will not be able to load without it.");
+                Application.Quit();
+                return;
+            }
             spawnPoint = FindObjectOfType<SnakeSpawnPoint>();
             if (spawnPoint)
             {

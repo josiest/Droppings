@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: NestSettings
   m_EditorClassIdentifier: 
   snakePrefab: {fileID: -8898408124686151506, guid: c351fd31e96e749cabc683ae3fe12bd2, type: 3}
+  defaultBodySegment: {fileID: -105583152081811126, guid: 0b3d0726d0b704069b62152e94de1bf0, type: 3}
+  defaultDropping: {fileID: 8948288813003081114, guid: 3c2742960a8d27e44b354aec57b534c1, type: 3}

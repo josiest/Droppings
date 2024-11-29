@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2713193344615773305}
   - component: {fileID: 4610352245118678454}
-  - component: {fileID: -1995301789158238778}
+  - component: {fileID: -105583152081811126}
   m_Layer: 0
   m_Name: SnakeBodySegment
   m_TagString: Player
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 623298577
+  m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 82eb4e28ff59743959bc72a624430646, type: 3}
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-1995301789158238778
+--- !u!114 &-105583152081811126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1961867929153009535}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 834e9bdf5bea4f9487b0eaef48416a6e, type: 3}
+  m_Script: {fileID: 11500000, guid: afee3bd571e943f8b3028cf4910c2c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}

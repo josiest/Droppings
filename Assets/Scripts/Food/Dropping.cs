@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Food
 {
+    [RequireComponent(typeof(SpriteRenderer))]
     public class Dropping : Pickup
     {
         public const string DroppingTag = "Dropping";

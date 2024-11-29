@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Board;
 using Food;
-using Game;
 using UnityEngine;
 
 namespace Snake
@@ -11,10 +10,10 @@ namespace Snake
     public class SnakeBody : MonoBehaviour
     {
         /** The object used for each snake body segment */
-        [SerializeField] public GameObject bodySegmentPrefab;
+        [SerializeField] public SnakeBodySegment bodySegmentPrefab;
 
         /** The object used for each dropping */
-        [SerializeField] public GameObject droppingPrefab;
+        [SerializeField] public Dropping droppingPrefab;
 
         /** The amount of body segments the snake has */
         [SerializeField] private int numSegments = 4;
@@ -45,25 +44,6 @@ namespace Snake
 
         public void Awake()
         {
-            if (bodySegmentPrefab is null)
-            {
-                Debug.LogWarning("Snake Body Segment hasn't been set, using default instead.\n" +
-                                 "You can change this in the snake body component settings");
-
-                var settings = GameSettings.GetInstance();
-                bodySegmentPrefab = settings.snakeWorldSettings.defaultSnakeSegmentPrefab;
-            }
-            if (!bodySegmentPrefab.GetComponent<BoardPiece>())
-            {
-                Debug.LogWarning("Snake Body Segment has no board piece component. Adding one now.");
-                bodySegmentPrefab.AddComponent<BoardPiece>();
-            }
-            if (!droppingPrefab.GetComponent<Dropping>())
-            {
-                Debug.LogWarning("Snake Body Dropping has no Dropping component. Adding one now.");
-                droppingPrefab.AddComponent<Dropping>();
-            }
-
             Digestion = GetComponent<SnakeDigestion>();
             Movement = GetComponent<MovementComponent>();
         }
@@ -72,7 +52,7 @@ namespace Snake
         {
             for (int i = 0; i < numSegments; i++)
             {
-                segments.AddLast(board.CreatePiece<BoardPiece>(bodySegmentPrefab, transform));
+                segments.AddLast(board.CreatePiece<BoardPiece>(bodySegmentPrefab.gameObject, transform));
             }
         }
 
@@ -138,7 +118,7 @@ namespace Snake
 
         private void LayDropping(Vector2Int position)
         {
-            board?.CreatePiece<Dropping>(droppingPrefab, position);
+            board?.CreatePiece<Dropping>(droppingPrefab.gameObject, position);
         }
     }
 }

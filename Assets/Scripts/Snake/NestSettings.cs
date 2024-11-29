@@ -8,6 +8,7 @@ namespace Snake
         public const string ResourcePath = "Settings/NestSettings";
         public SnakeBody snakePrefab;
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (!snakePrefab)
@@ -15,5 +16,6 @@ namespace Snake
                 Debug.LogError($"SnakePrefab in {ResourcePath} is not assigned");
             }
         }
+#endif
     }
 }
