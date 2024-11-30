@@ -1,8 +1,8 @@
-using Subsystems;
+using Board;
 
 namespace Score
 {
-    public class DivineAbacus : SceneSubsystem
+    public class DivineAbacus : GameBoardSubsystem
     {
         public int Score
         {

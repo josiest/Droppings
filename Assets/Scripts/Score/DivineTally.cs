@@ -1,5 +1,5 @@
+using Board;
 using Food;
-using Subsystems;
 using UnityEngine;
 
 namespace Score
@@ -12,7 +12,7 @@ namespace Score
 
         public void Start()
         {
-            divineAbacus = SceneSubsystemLocator.Find<DivineAbacus>();
+            divineAbacus = GameBoardSystem.Find<DivineAbacus>();
             var pickupComponent = GetComponent<Pickup>();
             pickupComponent.OnConsumed += OnConsumed;
         }

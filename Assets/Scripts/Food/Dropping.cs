@@ -1,7 +1,6 @@
 using Board;
 using Score;
 using Snake;
-using Subsystems;
 using UnityEngine;
 
 namespace Food
@@ -22,7 +21,7 @@ namespace Food
             fruitTree = GameBoardSystem.Find<DivineFruitTree>();
             snakeNest = GameBoardSystem.Find<SnakeNest>();
             board = GameBoardSystem.CurrentBoard;
-            divineAbacus = SceneSubsystemLocator.Find<DivineAbacus>();
+            divineAbacus = GameBoardSystem.Find<DivineAbacus>();
         }
         protected override void ConsumeBy(SnakeBody snake)
         {

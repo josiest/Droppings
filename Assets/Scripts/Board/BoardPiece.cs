@@ -1,5 +1,4 @@
-﻿using Subsystems;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Board
 {
@@ -18,7 +17,7 @@ namespace Board
         }
         protected virtual void Start()
         {
-            SceneSubsystemLocator.Find<GameBoard_DEPRECATED>()?.AddPiece(this);
+            GameBoardSystem.CurrentBoard?.AddPiece(this);
         }
         public virtual void CollideWith(BoardPiece other)
         {

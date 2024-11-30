@@ -1,4 +1,4 @@
-﻿using Subsystems;
+﻿using Board;
 using TMPro;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ namespace Score
         public void Start()
         {
             scoreText = GetComponent<TextMeshProUGUI>();
-            var divineAbacus = SceneSubsystemLocator.Find<DivineAbacus>();
+            var divineAbacus = GameBoardSystem.Find<DivineAbacus>();
             divineAbacus.OnScoreChanged += OnScoreChanged;
         }
 
