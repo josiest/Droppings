@@ -1,5 +1,5 @@
 using Board;
-using Score;
+using Game;
 using Snake;
 using UnityEngine;
 
@@ -10,26 +10,15 @@ namespace Food
     {
         public const string DroppingTag = "Dropping";
 
-        private GameBoard board;
-        private DivineFruitTree fruitTree;
-        private DivineAbacus divineAbacus;
-        private SnakeNest snakeNest;
-
+        private ResetSystem resetSystem;
         protected override void Start()
         {
             base.Start();
-            fruitTree = GameBoardSystem.Find<DivineFruitTree>();
-            snakeNest = GameBoardSystem.Find<SnakeNest>();
-            board = GameBoardSystem.CurrentBoard;
-            divineAbacus = GameBoardSystem.Find<DivineAbacus>();
+            resetSystem = GameBoardSystem.Find<ResetSystem>();
         }
         protected override void ConsumeBy(SnakeBody snake)
         {
-            snake.Digestion.Reset();
-            divineAbacus?.Reset();
-            board?.RemoveByTag(DroppingTag);
-            snakeNest?.Reset();
-            fruitTree?.DropFruit(board? board.RandomOpenSpace() : Vector2Int.zero);
+            resetSystem.Reset();
         }
     }
 }
