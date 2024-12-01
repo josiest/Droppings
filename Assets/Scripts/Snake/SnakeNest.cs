@@ -55,8 +55,7 @@ namespace Snake
         }
         public void Reset()
         {
-            var direction = Snake ? Snake.Movement.Direction : startDirection;
-            Snake?.ResetTo(startPosition, direction);
+            Snake?.ResetTo(startPosition, startDirection);
         }
     }
 }

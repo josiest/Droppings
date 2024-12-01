@@ -8,6 +8,14 @@ namespace Game
 {
     public class ResetSystem : GameBoardSubsystem
     {
+        public delegate void GameOverEvent();
+        public event GameOverEvent OnGameOver;
+
+        public void GameOver()
+        {
+            OnGameOver?.Invoke();
+        }
+
         public void Reset()
         {
             divineAbacus?.Reset();

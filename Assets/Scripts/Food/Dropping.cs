@@ -19,6 +19,7 @@ namespace Food
         protected override void ConsumeBy(SnakeBody snake)
         {
             resetSystem.Reset();
+            resetSystem.GameOver();
         }
     }
 }
