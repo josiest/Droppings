@@ -14,6 +14,7 @@ namespace UI
 
         private void OnGameOver()
         {
+            tickSystem?.Pause();
             gameObject.SetActive(true);
         }
 
@@ -23,14 +24,10 @@ namespace UI
             if (resetSystem)
             {
                 resetSystem.OnGameOver += OnGameOver;
+                resetSystem.OnReset += Resume;
             }
             tickSystem = GameBoardSystem.Find<TickSystem>();
             gameObject.SetActive(false);
-        }
-
-        private void OnEnable()
-        {
-            tickSystem?.Pause();
         }
 
         private TickSystem tickSystem;

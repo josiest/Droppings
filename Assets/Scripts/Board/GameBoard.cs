@@ -33,9 +33,7 @@ namespace Board
 
         public void Tick()
         {
-            pieces.RemoveAll(piece => dirtyCache.Contains(piece));
-            foreach (var piece in dirtyCache) { Destroy(piece.gameObject); }
-            dirtyCache.Clear();
+            ClearDirtyCache();
         }
 
         public T CreatePiece<T>(GameObject prefab) where T : BoardPiece
@@ -76,6 +74,13 @@ namespace Board
             return pieces.First(piece => piece.CompareTag(searchTag));
         }
 
+        public void RemoveImmediateByTag(string searchTag)
+        {
+            RemoveByTag(searchTag);
+            pieces.RemoveAll(piece => dirtyCache.Contains(piece));
+            foreach (var piece in dirtyCache) { DestroyImmediate(piece.gameObject); }
+            dirtyCache.Clear();
+        }
         public void RemoveByTag(string searchTag)
         {
             dirtyCache.UnionWith(pieces.Where(piece => piece.CompareTag(searchTag)));
@@ -101,6 +106,13 @@ namespace Board
             var x = Random.Range(Dimensions.x, Dimensions.x + Dimensions.width);
             var y = Random.Range(Dimensions.y, Dimensions.y + Dimensions.height);
             return new Vector2Int(x, y);
+        }
+
+        private void ClearDirtyCache()
+        {
+            pieces.RemoveAll(piece => dirtyCache.Contains(piece));
+            foreach (var piece in dirtyCache) { Destroy(piece.gameObject); }
+            dirtyCache.Clear();
         }
     }
 }

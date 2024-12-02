@@ -62,11 +62,11 @@ namespace Snake
 
         public void OnEnable()
         {
-            actionMappings.Enable();
+            actionMappings?.Enable();
         }
         public void OnDisable()
         {
-            actionMappings.Disable();
+            actionMappings?.Disable();
         }
         public void Digest()
         {

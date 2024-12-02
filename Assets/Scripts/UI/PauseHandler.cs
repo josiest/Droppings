@@ -44,6 +44,7 @@ namespace UI
         }
         private void OnDestroy()
         {
+            if (actionMappings == null) { return; }
             actionMappings.Disable();
             actionMappings.playerActions.pause.performed -= OnPaused;
         }

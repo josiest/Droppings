@@ -21,11 +21,13 @@ namespace Board
 
         public void Pause()
         {
+            isPaused = true;
             enabled = false;
         }
 
         public void Resume()
         {
+            isPaused = false;
             enabled = true;
         }
                 
@@ -67,13 +69,19 @@ namespace Board
 
         public void Update()
         {
+            if (isPaused) { return; }
             currentTickTimer -= Time.deltaTime;
             while (currentTickTimer <= 0f)
             {
-                foreach (var tickable in tickables) { tickable.Tick(); }
+                foreach (var tickable in tickables)
+                {
+                    tickable.Tick();
+                    if (isPaused) { return; }
+                }
                 currentTickTimer += SecondsPerTick;
             }
         }
 
+        private bool isPaused;
     }
 }

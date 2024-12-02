@@ -1,3 +1,5 @@
+using Board;
+using Game;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,15 +10,13 @@ namespace UI
     {
         private void OnClicked()
         {
-            gameOverHandler?.Resume();
+            var resetSystem = GameBoardSystem.Find<ResetSystem>();
+            resetSystem?.Reset();
         }
         private void Start()
         {
             var button = GetComponent<Button>();
             button?.onClick.AddListener(OnClicked);
-
-            gameOverHandler = GetComponentInParent<GameOverHandler>();
         }
-        private GameOverHandler gameOverHandler;
     }
 }

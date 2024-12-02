@@ -8,8 +8,9 @@ namespace Game
 {
     public class ResetSystem : GameBoardSubsystem
     {
-        public delegate void GameOverEvent();
-        public event GameOverEvent OnGameOver;
+        public delegate void ResetEvent();
+        public ResetEvent OnGameOver;
+        public ResetEvent OnReset;
 
         public void GameOver()
         {
@@ -19,15 +20,16 @@ namespace Game
         public void Reset()
         {
             divineAbacus?.Reset();
-            board?.RemoveByTag(Dropping.DroppingTag);
+            board?.RemoveImmediateByTag(Dropping.DroppingTag);
             snakeNest?.Reset();
             fruitTree?.DropFruit(board? board.RandomOpenSpace() : Vector2Int.zero);
+            OnReset?.Invoke();
         }   
         private void Start()
         {
+            board = GameBoardSystem.CurrentBoard;
             fruitTree = GameBoardSystem.Find<DivineFruitTree>();
             snakeNest = GameBoardSystem.Find<SnakeNest>();
-            board = GameBoardSystem.CurrentBoard;
             divineAbacus = GameBoardSystem.Find<DivineAbacus>();
         }
 
