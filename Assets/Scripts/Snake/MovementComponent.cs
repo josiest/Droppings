@@ -65,11 +65,11 @@ namespace Snake
 
         private void OnEnable()
         {
-            actionMappings.playerMovement.Enable();
+            actionMappings?.playerMovement.Enable();
         }
         private void OnDisable()
         {
-            actionMappings.playerMovement.Disable();
+            actionMappings?.playerMovement.Disable();
         }
 
         public void Reset()
