@@ -8,9 +8,9 @@ namespace UI.Score
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class HighScoreHandler : MonoBehaviour
     {
-        private void OnEnable()
+        private void Awake()
         {
-            legacy = GameSubsystems.Find<AncestralLegacy>();
+            legacy = GameSubsystems.FindOrRegister<AncestralLegacy>();
             UpdateScoreText();
             if (legacy) { legacy.OnNewHighScore += OnNewHighScore; } 
         }
