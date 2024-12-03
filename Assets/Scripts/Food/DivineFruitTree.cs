@@ -10,28 +10,23 @@ namespace Food
         private FoodPickup fruit;
         private GameBoard board;
 
-        private void OnRegisterGameBoard(GameBoard newBoard)
-        {
-            board = newBoard;
-        }
-
         public void Awake()
         {
+            board = GameBoardSystem.CurrentBoard;
             var settings = Resources.Load<TreeSettings>(TreeSettings.ResourcePath);
             if (!settings)
             {
-                Debug.LogWarning($"Unable to load tree settings at {TreeSettings.ResourcePath}, " +
-                                  "using default settings instead");
+                Debug.LogWarning("[Droppings.DivineFruitTree] Unable to load tree settings at " +
+                                 $"{TreeSettings.ResourcePath}, using default settings instead");
                 settings = ScriptableObject.CreateInstance<TreeSettings>();
             }
             fruitPrefab = settings.FruitPrefab;
-        }
 
-        private void Start()
-        {
-            var snakeNest = GameBoardSystem.Find<SnakeNest>();
-            if (snakeNest?.Snake) { SpawnFruit(); }
-            else if (snakeNest) { snakeNest.OnSnakeSpawned += _ => SpawnFruit(); }
+            var snakeNest = GameBoardSystem.FindOrRegister<SnakeNest>();
+            if (snakeNest)
+            {
+                snakeNest.OnSnakeSpawned += _ => SpawnFruit();
+            }
         }
 
         private void SpawnFruit()

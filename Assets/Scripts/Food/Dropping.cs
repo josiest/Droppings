@@ -14,7 +14,7 @@ namespace Food
         protected override void Start()
         {
             base.Start();
-            resetSystem = GameBoardSystem.Find<ResetSystem>();
+            resetSystem = GameBoardSystem.FindOrRegister<ResetSystem>();
         }
         protected override void ConsumeBy(SnakeBody snake)
         {

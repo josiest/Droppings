@@ -23,17 +23,19 @@ namespace Food
         private void OnValidate()
         {
             if (fruitPrefab) { return; }
-            Debug.LogWarning($"fruitPrefab in {ResourcePath} is not assigned, " +
+            Debug.LogWarning($"[Droppings.TreeSettings] fruitPrefab in {ResourcePath} is not assigned, " +
                              $"using default prefab at {FoodPickup.DefaultPath}");
             LoadDefault();
         }
         
         private void LoadDefault()
         {
+            Debug.Log("[Droppings.TreeSettings] Loading default fruit prefab");
             fruitPrefab = Resources.Load<FoodPickup>(FoodPickup.DefaultPath);
             if (!fruitPrefab)
             {
-                Debug.LogError($"Default fruit prefab at {FoodPickup.DefaultPath} doesn't exist");
+                Debug.LogError($"[Droppings.TreeSettings] Default fruit prefab at {FoodPickup.DefaultPath} " +
+                                "doesn't exist");
             }
         }
     }

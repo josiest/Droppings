@@ -1,4 +1,3 @@
-using System.Reflection;
 using Pi.Subsystems;
 using UnityEngine;
 
@@ -6,6 +5,12 @@ namespace Board
 {
     public class GameBoardSystem : SubsystemBase
     {
+        public static T FindOrRegister<T>() where T : GameBoardSubsystem
+        {
+            if (!instance) { Debug.LogError("[Droppings.GameBoardSystem] Game Board System instance doesn't exist"); }
+            var subsystem = instance?.GetComponent<T>();
+            return subsystem? subsystem : instance?.gameObject.AddComponent<T>();
+        }
         public static T Find<T>() where T : GameBoardSubsystem
         {
             return instance?.GetComponent<T>();
@@ -35,25 +40,16 @@ namespace Board
         // Unity Events
         //
 
+        private void Awake()
+        {
+            if (instance && instance != this) { Destroy(this); }
+        }
+
         private void RegisterSubsystems()
         {
             foreach (var subsystemType in SubsystemLocators.GetAllSubsystemTypes<GameBoardSubsystem>())
             {
-                var subsystem = gameObject.AddComponent(subsystemType);
-                var onRegisterMethod = subsystemType
-                    .GetMethod("OnRegisterGameBoard", BindingFlags.Instance | BindingFlags.Public
-                                                                            | BindingFlags.NonPublic);
-                if (onRegisterMethod == null) { continue; }
-
-                var methodParams = onRegisterMethod.GetParameters();
-                if (methodParams.Length == 1 && methodParams[0].ParameterType == typeof(GameBoard))
-                {
-                    onRegisterMethod.Invoke(subsystem, new[] { (object)Board });
-                }
-                else if (methodParams.Length == 0)
-                {
-                    onRegisterMethod.Invoke(subsystem, null);
-                }
+                if (!GetComponent(subsystemType)) { gameObject.AddComponent(subsystemType); }
             }
         }
 

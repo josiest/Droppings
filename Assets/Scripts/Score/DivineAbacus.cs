@@ -1,6 +1,7 @@
 using Board;
 using Game;
 using Pi.Subsystems;
+using UnityEngine;
 
 namespace Score
 {
@@ -20,16 +21,32 @@ namespace Score
         public delegate void ScoreChangedEvent(int newScore);
         public ScoreChangedEvent OnScoreChanged;
 
-        private void Start()
+        private void Awake()
         {
-            var resetSystem = GameBoardSystem.Find<ResetSystem>();
+            var resetSystem = GameBoardSystem.FindOrRegister<ResetSystem>();
             if (resetSystem) { resetSystem.OnGameOver += OnGameOver; }
+            else
+            {
+                Debug.LogError("[Droppings.DivineAbacus] Couldn't find ResetSystem.");
+            }
+
+            var instance = GameBoardSystem.Find<DivineAbacus>();
+            if (instance != this)
+            {
+                Debug.Log("[Droppings.DivineAbacus] Encountered duplicate Divine Abacus.");
+                Destroy(this);
+            }
         }
 
         private void OnGameOver()
         {
-            var legacy = GameSubsystems.Find<AncestralLegacy>();
+            var legacy = GameSubsystems.FindOrRegister<AncestralLegacy>();
             if (legacy) { legacy.PushScore(Score); }
+            else
+            {
+                Debug.LogError("[Droppings.DivineAbacus] Couldn't find Ancestral Legacy on Game Over. " +
+                               $"called from {gameObject.GetInstanceID()}", gameObject);
+            }
         }
 
         private int score;

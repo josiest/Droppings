@@ -4,14 +4,10 @@ namespace Board
 {
     public class CollisionSystem : GameBoardSubsystem, ITickable
     {
-        private void OnRegisterGameBoard(GameBoard newBoard)
+        private void Awake()
         {
-            board = newBoard;
-        }
-
-        private void Start()
-        {
-            GameBoardSystem.Find<TickSystem>()?.AddTickable(this);
+            GameBoardSystem.FindOrRegister<TickSystem>()?.AddTickable(this);
+            board = GameBoardSystem.CurrentBoard;
         } 
         public void Tick()
         {

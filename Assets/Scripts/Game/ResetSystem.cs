@@ -25,12 +25,12 @@ namespace Game
             fruitTree?.DropFruit(board? board.RandomOpenSpace() : Vector2Int.zero);
             OnReset?.Invoke();
         }   
-        private void Start()
+        private void Awake()
         {
             board = GameBoardSystem.CurrentBoard;
-            fruitTree = GameBoardSystem.Find<DivineFruitTree>();
-            snakeNest = GameBoardSystem.Find<SnakeNest>();
-            divineAbacus = GameBoardSystem.Find<DivineAbacus>();
+            fruitTree = GameBoardSystem.FindOrRegister<DivineFruitTree>();
+            snakeNest = GameBoardSystem.FindOrRegister<SnakeNest>();
+            divineAbacus = GameBoardSystem.FindOrRegister<DivineAbacus>();
         }
 
         private GameBoard board;
