@@ -71,7 +71,11 @@ namespace Board
 
         public BoardPiece FindPieceByTag(string searchTag)
         {
-            return pieces.First(piece => piece.CompareTag(searchTag));
+            return AllPiecesWithTag(searchTag).First();
+        }
+        public IEnumerable<BoardPiece> AllPiecesWithTag(string searchTag)
+        {
+            return pieces.Where(piece => piece.CompareTag(searchTag) && !dirtyCache.Contains(piece));
         }
 
         public void RemoveImmediateByTag(string searchTag)
@@ -84,6 +88,24 @@ namespace Board
         public void RemoveByTag(string searchTag)
         {
             dirtyCache.UnionWith(pieces.Where(piece => piece.CompareTag(searchTag)));
+        }
+        public void RemoveRange(IEnumerable<BoardPiece> piecesToRemove)
+        {
+            dirtyCache.UnionWith(piecesToRemove);
+        }
+        public IEnumerable<BoardPiece> RandomPiecesWithTag(string searchTag, int amount)
+        {
+            var candidates = AllPiecesWithTag(searchTag).ToList();
+            var boardPieces = new List<BoardPiece>();
+            for (int i = 0; i < amount; ++i)
+            {
+                if (candidates.Count == 0) { break; }
+
+                int index = Random.Range(0, candidates.Count);
+                boardPieces.Add(candidates[index]);
+                candidates.RemoveAt(index);
+            }
+            return boardPieces;
         }
         public bool HasCollision(Vector2Int pos)
         {
@@ -113,6 +135,11 @@ namespace Board
             pieces.RemoveAll(piece => dirtyCache.Contains(piece));
             foreach (var piece in dirtyCache) { Destroy(piece.gameObject); }
             dirtyCache.Clear();
+        }
+
+        private BoardPiece FindRandomPiece()
+        {
+            return pieces[Random.Range(0, pieces.Count)];
         }
     }
 }

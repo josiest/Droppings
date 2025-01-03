@@ -8,16 +8,9 @@ namespace Ascension
     {
         public void Awake()
         {
-           var settings = Resources.Load<AscensionSettings>(AscensionSettings.ResourcePath);
-           if (!settings)
-           {
-                Debug.LogWarning("[Droppings.AscensionSystem] Unable to ascension settings at " +
-                                 $"{AscensionSettings.ResourcePath}, using default settings instead");
-                settings = ScriptableObject.CreateInstance<AscensionSettings>();
-           }
-
-           pointsPerTier = new List<int>(settings.PointsPerTier);
-           currentPoints = CreateCurrentPoints(pointsPerTier);
+            var settings = AscensionSettings.LoadOrCreateDefault();
+            pointsPerTier = new List<int>(settings.PointsPerTier);
+            currentPoints = CreateCurrentPoints(pointsPerTier);
         }
 
         public delegate void PointEvent(int numPoints);

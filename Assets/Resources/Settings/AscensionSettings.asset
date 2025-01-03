@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: AscensionSettings
   m_EditorClassIdentifier: 
   PointsPerTier: 0900000003000000
+  ActiveBoardEvents:
+  - {fileID: -6952583325849309794, guid: bf792463969a7e14886eda6c40549c53, type: 3}
