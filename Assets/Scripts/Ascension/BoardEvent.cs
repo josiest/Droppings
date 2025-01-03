@@ -11,7 +11,7 @@ namespace Ascension
             ascensionSystem.OnGlyphCompleted += OnGlyphCompleted;
         }
 
-        public virtual void OnGlyphCompleted(int glyphTier)
+        public virtual void OnGlyphCompleted()
         {
         }
     }

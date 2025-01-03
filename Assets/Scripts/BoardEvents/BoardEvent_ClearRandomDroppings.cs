@@ -10,10 +10,8 @@ namespace BoardEvents
         [Tooltip("The amount of random droppings to remove when a glyph is completed")]
         public int numDroppingsToRemove = 4;
 
-        public override void OnGlyphCompleted(int glyphTier)
+        public override void OnGlyphCompleted()
         {
-            if (glyphTier != 1) { return; }
-
             var gameBoard = GameBoardSystem.CurrentBoard;
             gameBoard.RemoveRange(gameBoard.RandomPiecesWithTag(Dropping.DroppingTag, numDroppingsToRemove));
         }

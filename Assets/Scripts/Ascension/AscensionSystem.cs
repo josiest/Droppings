@@ -1,31 +1,48 @@
 ﻿using System.Collections.Generic;
 using Board;
-using UnityEngine;
+using Game;
+using Score;
 
 namespace Ascension
 {
     public class AscensionSystem : GameBoardSubsystem
     {
-        public void Awake()
+        private void Awake()
         {
             var settings = AscensionSettings.LoadOrCreateDefault();
             pointsPerTier = new List<int>(settings.PointsPerTier);
             currentPoints = CreateCurrentPoints(pointsPerTier);
         }
 
-        public delegate void PointEvent(int numPoints);
+        private void Start()
+        {
+            abacus = GameBoardSystem.FindOrRegister<DivineAbacus>();
+            abacus.OnScoreChanged += OnScoreChanged;
 
-        /**
-         * \brief Called every time the ascension point level changes.
-         * \note numPoints is the current amount of points for the current tier
-         */
-        public PointEvent OnPointsAdded;
+            var resetSystem = GameBoardSystem.FindOrRegister<ResetSystem>();
+            resetSystem.OnReset += Reset;
+        }
+
+        public delegate void PointEvent();
+
+        /** * \brief Called every time a tally is added to the score */
+        public PointEvent OnPointAdded;
         
-        /**
-         * \brief Called every time a glyph is completed.
-         * \not numPoints is the tier which was completed
-         */
+        /** * \brief Called every time a glyph is completed. */
         public PointEvent OnGlyphCompleted;
+
+        /** \brief Called every time the score is reset - namely when the game is reset */
+        public PointEvent OnScoreReset;
+
+        private void OnScoreChanged(int newScore)
+        {
+            // need to refactor, but for now assume new score always changes by two rules
+            // 1. A point was added
+            // 2. The score was reset
+
+            if (newScore == 0) { Reset(); }
+            else { AscensionPoints += 1; }
+        }
 
         /** The current ascension points counting toward the next tier-1 glyph */
         public int AscensionPoints
@@ -45,17 +62,20 @@ namespace Ascension
                 
                 // Make sure that overflow points go toward next glyph
                 currentPoints[0] = value % pointsPerTier[0];
+                OnPointAdded?.Invoke();
 
                 // broadcast glyph and point events accordingly
                 if (value >= pointsPerTier[0])
                 {
                     currentPoints[1] += 1;
-                    Debug.Log("Completed a glyph!");
-                    OnGlyphCompleted?.Invoke(currentPoints[1] >= pointsPerTier[1] ? 2 : 1);
+                    OnGlyphCompleted?.Invoke();
                 }
-                Debug.Log("Added a point!");
-                OnPointsAdded?.Invoke(currentPoints[0]);
             }
+        }
+
+        public int PointsForTier(int tier)
+        {
+            return tier < pointsPerTier.Count ? pointsPerTier[tier] : 0;
         }
 
         /** The total number of ascension points gained, glyphs included */
@@ -82,6 +102,16 @@ namespace Ascension
             return newCurrentPoints;
         }
 
+        private void Reset()
+        {
+            for (int i = 0; i < currentPoints.Count; ++i)
+            {
+                currentPoints[i] = 0;
+            }
+            OnScoreReset?.Invoke();
+        }
+
+        private DivineAbacus abacus;
         private List<int> pointsPerTier = new();
         private List<int> currentPoints = new();
     }
