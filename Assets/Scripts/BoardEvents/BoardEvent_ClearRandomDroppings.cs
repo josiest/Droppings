@@ -11,29 +11,41 @@ namespace BoardEvents
         [Tooltip("The amount of random droppings to remove when a glyph is completed")]
         public int numDroppingsToRemove = 4;
 
-        protected override void Start()
-        {
-            base.Start();
-            gameBoard = GameBoardSystem.CurrentBoard;
-        }
-
         public override void OnGlyphCompleted()
         {
-            var gameBoard = GameBoardSystem.CurrentBoard;
+            gameBoard = GameBoardSystem.CurrentBoard;
             var piecesToClear = gameBoard.RandomPiecesWithTag(Dropping.DroppingTag, numDroppingsToRemove).ToList();
-            foreach (var piece in piecesToClear)
+
+            for (int i = 0; i < piecesToClear.Count; i++)
             {
+                var piece = piecesToClear[i];
                 piece.CollisionEnabled = false;
-                var fadeOut = piece.GetComponent<SequentialFadeOutBehavior>();
-                if (fadeOut)
+                var currentFadeOut = piece.GetComponent<SequentialFadeOutBehavior>();
+                if (currentFadeOut)
                 {
-                    fadeOut.OnCompleted += () => { gameBoard.RemovePiece(piece); };
-                    fadeOut.FadeOut();
+                    currentFadeOut.OnCompleted += () => { gameBoard.RemovePiece(piece); };
                 }
                 else
                 {
                     gameBoard.RemovePiece(piece);
                 }
+
+                if (i >= piecesToClear.Count - 1) { continue; }
+                var nextFadeOut = piecesToClear[i + 1].GetComponent<SequentialFadeOutBehavior>();
+                if (nextFadeOut) { currentFadeOut.OnStagger += () => { nextFadeOut.FadeOut(); }; }
+            }
+
+            if (piecesToClear.Count >= 1)
+            {
+                var lastPiece = piecesToClear.Last();
+                var lastFadeOut = lastPiece.GetComponent<SequentialFadeOutBehavior>();
+                lastFadeOut.OnCompleted += () =>
+                {
+                    gameBoard.RemovePiece(lastPiece);
+                };
+
+                var firstFadeOut = piecesToClear.First().GetComponent<SequentialFadeOutBehavior>();
+                firstFadeOut.FadeOut();
             }
         }
 

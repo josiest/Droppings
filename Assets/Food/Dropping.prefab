@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11648e3631734519b3857eef62a00f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CollisionEnabled: 1
   position: {x: 0, y: 0}
 --- !u!114 &-6425306445398714100
 MonoBehaviour:
@@ -111,7 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c58403312e45a19cce778b9924a724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FadeToWhite:
+  FadeToWhiteTime: 0.1
+  FadeToWhiteCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -135,7 +137,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  FadeOut:
+  FadeOutTime: 0.2
+  FadeOutCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3

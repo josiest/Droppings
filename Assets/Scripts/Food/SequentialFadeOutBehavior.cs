@@ -7,8 +7,7 @@ namespace Food
     {
         NotStarted,
         FadingToWhite,
-        FadingOut,
-        Finished
+        FadingOut
     }
 
     [RequireComponent(typeof(SpriteRenderer))]
@@ -16,6 +15,7 @@ namespace Food
     {
         public delegate void FadeOutEvent();
         public FadeOutEvent OnCompleted;
+        public FadeOutEvent OnStagger;
 
         public float FadeToWhiteTime = 0.1f;
         public AnimationCurve FadeToWhiteCurve;
@@ -23,7 +23,7 @@ namespace Food
         public float FadeOutTime = 0.2f;
         public AnimationCurve FadeOutCurve;
 
-        public float SequentialDelay = 0.1f;
+        public float SequentialDelay = 0.05f;
 
         private void Awake()
         {
@@ -32,6 +32,16 @@ namespace Food
 
         private void Update()
         {
+            if (staggerTime >= SequentialDelay)
+            {
+                staggerTime = -1f;
+                OnStagger?.Invoke();
+            }
+            if (staggerTime >= 0f)
+            {
+                staggerTime += Time.deltaTime;
+            }
+
             // Animation state machine
             switch (currentState)
             {
@@ -40,45 +50,42 @@ namespace Food
                     break;
 
                 case FadeOutState.FadingToWhite:
-                    currentTime += Time.deltaTime;
-                    if (currentTime >= FadeToWhiteTime)
+                    if (animationTime >= FadeToWhiteTime)
                     {
-                        currentTime = 0f;
+                        animationTime = 0f;
                         currentState = FadeOutState.FadingOut;
                     }
                     else
                     {
-                        float t = currentTime / FadeToWhiteTime;
+                        float t = animationTime / FadeToWhiteTime;
                         float alpha = FadeToWhiteCurve.Evaluate(t);
                         spriteRenderer.color = Color.Lerp(originalColor, Color.white, alpha);
                     }
+                    animationTime += Time.deltaTime;
                     break;
 
                 case FadeOutState.FadingOut:
-                    currentTime += Time.deltaTime;
-                    if (currentTime >= FadeOutTime)
+                    if (animationTime >= FadeOutTime)
                     {
-                        currentTime = 0f;
-                        currentState = FadeOutState.Finished;
+                        currentState = FadeOutState.NotStarted;
+                        animationTime = -1f;
+                        OnCompleted?.Invoke();
                     }
                     else
                     {
-                        float t = currentTime / FadeOutTime;
+                        float t = animationTime / FadeOutTime;
                         float alpha = FadeOutCurve.Evaluate(t);
                         spriteRenderer.color = Color.Lerp(Color.white, Color.clear, alpha);
                     }
-                    break;
-
-                case FadeOutState.Finished:
-                    currentState = FadeOutState.NotStarted;
-                    OnCompleted?.Invoke();
+                    animationTime += Time.deltaTime;
                     break;
             }
         }
 
         public void FadeOut()
         {
-            currentTime = 0f;
+            animationTime = 0f;
+            staggerTime = 0f;
             currentState = FadeOutState.FadingToWhite;
         }
 
@@ -86,6 +93,7 @@ namespace Food
         private SpriteRenderer spriteRenderer;
         
         private Color originalColor;
-        private float currentTime;
+        private float animationTime = -1f;
+        private float staggerTime = -1f;
     }
 }
