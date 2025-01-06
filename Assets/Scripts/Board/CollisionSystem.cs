@@ -15,8 +15,9 @@ namespace Board
                          .Where(piece => piece.CompareTag(GameBoard.PlayerTag)))
             {
                 foreach (var other in board.Pieces
+                             .Where(other => playerPiece.Position == other.Position)
                              .Where(other => !other.CompareTag(GameBoard.PlayerTag))
-                             .Where(other => playerPiece.Position == other.Position))
+                             .Where(other => other.CollisionEnabled))
                 {
                     other.CollideWith(playerPiece);
                 }

@@ -5,6 +5,7 @@ namespace Board
     public class BoardPiece : MonoBehaviour
     {
         protected const string DefaultSquarePath = "Sprites/DefaultSquare";
+        [SerializeField] public bool CollisionEnabled = true;
         [SerializeField] private Vector2Int position;
         public Vector2Int Position
         {

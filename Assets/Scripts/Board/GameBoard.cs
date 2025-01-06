@@ -93,6 +93,10 @@ namespace Board
         {
             dirtyCache.UnionWith(piecesToRemove);
         }
+        public void RemovePiece(BoardPiece pieceToRemove)
+        {
+            dirtyCache.Add(pieceToRemove);
+        }
         public IEnumerable<BoardPiece> RandomPiecesWithTag(string searchTag, int amount)
         {
             var candidates = AllPiecesWithTag(searchTag).ToList();
